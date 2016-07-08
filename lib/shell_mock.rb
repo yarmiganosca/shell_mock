@@ -28,12 +28,12 @@ module ShellMock
 
   def self.enable
     Kernel.module_exec do
-      if !!Kernel.method(:__shell_mocked_system)
-        alias __un_shell_mocked_system system
-        alias system __shell_mocked_system
+      if Kernel.respond_to?(:__shell_mocked_system)
+        alias_method(:__un_shell_mocked_system, :system)
+        alias_method(:system, :__shell_mocked_system)
       end
 
-      if !!Kernel.method(:__shell_mocked_backtick)
+      if Kernel.respond_to?(:__shell_mocked_backtick)
         alias_method(:__un_shell_mocked_backtick, :`)
         alias_method(:`, :__shell_mocked_backtick)
       end
