@@ -29,7 +29,7 @@ module Kernel
       stub.side_effect.call
       stub.called_with({}, command, {})
 
-      return stub.output
+      return stub.expected_output
     else
       if ShellMock.let_commands_run?
         __un_shell_mocked_backtick(command)

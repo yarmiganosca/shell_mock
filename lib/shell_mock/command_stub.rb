@@ -1,6 +1,6 @@
 module ShellMock
   class CommandStub
-    attr_reader :command, :output, :return_code
+    attr_reader :command, :expected_output, :return_code
 
     def initialize(command)
       @command = command
@@ -26,9 +26,9 @@ module ShellMock
       @options || {}
     end
 
-    def and_return(output, return_code: 0)
-      @output      = output
-      @return_code = return_code
+    def and_return(expected_output, return_code: 0)
+      @expected_output = expected_output
+      @return_code     = return_code
 
       self
     end
