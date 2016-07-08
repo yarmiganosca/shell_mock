@@ -11,6 +11,14 @@ RSpec.describe ShellMock do
 
         expect(stub).to have_been_called
       end
+
+      it 'intercepts backtick' do
+        stub = ShellMock.stub_command('ls').and_return("\n")
+
+        expect(`ls`).to eq "\n"
+
+        expect(stub).to have_been_called
+      end
     end
   end
 

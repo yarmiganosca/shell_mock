@@ -21,4 +21,21 @@ module Kernel
       end
     end
   end
+
+  def __shell_mocked_backtick(command)
+    stub = ShellMock::StubRegistry.stub_matching({}, command, {})
+
+    if stub
+      stub.side_effect.call
+      stub.called_with({}, command, {})
+
+      return stub.output
+    else
+      if ShellMock.let_commands_run?
+        __un_shell_mocked_backtick(command)
+      else
+        raise NoStubSpecified.new({}, command, {})
+      end
+    end
+  end
 end
