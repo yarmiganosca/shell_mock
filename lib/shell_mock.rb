@@ -42,8 +42,8 @@ module ShellMock
 
   def self.disable
     Kernel.module_exec do
-      alias_method(:system, :__un_shell_mocked_system) if !!Kernel.method(:__un_shell_mocked_system)
-      alias_method(:`, :__un_shell_mocked_backtick)    if !!Kernel.method(:__un_shell_mocked_backtick)
+      alias_method(:system, :__un_shell_mocked_system) if Kernel.respond_to?(:__un_shell_mocked_system)
+      alias_method(:`, :__un_shell_mocked_backtick)    if Kernel.respond_to?(:__un_shell_mocked_backtick)
     end
 
     StubRegistry.clear
