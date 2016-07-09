@@ -1,7 +1,0 @@
-example_id                         | status | run_time        |
----------------------------------- | ------ | --------------- |
-./spec/shell_mock_spec.rb[1:1:1:1] | passed | 0.00293 seconds |
-./spec/shell_mock_spec.rb[1:1:1:2] | passed | 0.00156 seconds |
-./spec/shell_mock_spec.rb[1:2:1]   | passed | 0.00096 seconds |
-./spec/shell_mock_spec.rb[1:3:1]   | passed | 0.0002 seconds  |
-./spec/shell_mock_spec.rb[1:4:1]   | passed | 0.00261 seconds |
