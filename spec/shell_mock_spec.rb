@@ -9,20 +9,20 @@ RSpec.describe ShellMock do
     it 'intercepts system' do
       expect(system('ls')).to eq true
 
-      expect(stub).to have_been_called
+      expect(stub.calls).to_not be_empty
     end
 
     it 'intercepts backtick' do
       expect(`ls`).to eq "\n"
 
-      expect(stub).to have_been_called
+      expect(stub.calls).to_not be_empty
     end
 
     it 'uses the "closest" stub' do
       expect(`ls $HOME`).to eq "\n"
 
-      expect(home_stub).to have_been_called
-      expect(stub).to_not have_been_called
+      expect(home_stub.calls).to_not be_empty
+      expect(stub.calls).to be_empty
     end
   end
 

@@ -47,10 +47,6 @@ module ShellMock
       @calls ||= []
     end
 
-    def has_been_called?
-      calls.any?
-    end
-
     def called_with(env, command, options)
       calls << [env, command, options]
     end
