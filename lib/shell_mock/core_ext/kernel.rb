@@ -4,7 +4,7 @@ module Kernel
   def __shell_mocked_system(env, command = nil, **options)
     env, command = {}, env if command.nil?
 
-    # other arg bullshit
+    # other arg manipulation
 
     stub = ShellMock::StubRegistry.stub_matching(env, command, options)
 
@@ -17,7 +17,7 @@ module Kernel
       if ShellMock.let_commands_run?
         __un_shell_mocked_system(env, command, **options)
       else
-        raise NoStubSpecified.new(env, command, options)
+        raise ShellMock::NoStubSpecified.new(env, command, options)
       end
     end
   end
@@ -34,7 +34,7 @@ module Kernel
       if ShellMock.let_commands_run?
         __un_shell_mocked_backtick(command)
       else
-        raise NoStubSpecified.new({}, command, {})
+        raise ShellMock::NoStubSpecified.new({}, command, {})
       end
     end
   end
