@@ -1,14 +1,9 @@
-require 'shell_mock'
-require 'shell_mock/rspec/matchers/commmand_matcher'
+require 'shell_mock/call_verifier'
 
-module WebMock
+module ShellMock
   module Matchers
     def have_been_called
-      ShellMock::CommandMatcher.new
-    end
-
-    def have_not_been_called
-      ShellMock::CommandMatcher.new.times(0)
+      ShellMock::CallVerifier.new
     end
   end
 end

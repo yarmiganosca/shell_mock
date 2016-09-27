@@ -4,6 +4,7 @@ RSpec.describe ShellMock do
     after { ShellMock.disable }
 
     let!(:stub) { ShellMock.stub_command('ls').and_return("\n") }
+    let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
 
     it 'intercepts system' do
       expect(system('ls')).to eq true
@@ -17,13 +18,11 @@ RSpec.describe ShellMock do
       expect(stub).to have_been_called
     end
 
-    context 'being expected once' do
-      before { system('ls') }
+    it 'uses the "closest" stub' do
+      expect(`ls $HOME`).to eq "\n"
 
-      it 'is called once' do
-        expect(stub).to have_been_called.once
-        expect(stub).to have_been_called.times(1)
-      end
+      expect(home_stub).to have_been_called
+      expect(stub).to_not have_been_called
     end
   end
 

@@ -1,3 +1,5 @@
+require 'shell_mock/call_verifier'
+
 module ShellMock
   class CommandStub
     attr_reader :command, :expected_output, :return_code
@@ -33,8 +35,8 @@ module ShellMock
       self
     end
 
-    def matches?(command)
-      !!/#{self.command}/.match(command)
+    def matches?(candidate_command)
+      candidate_command.include?(command)
     end
 
     def side_effect
