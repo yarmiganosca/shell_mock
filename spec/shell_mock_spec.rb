@@ -3,47 +3,69 @@ RSpec.describe ShellMock do
     before { ShellMock.enable }
     after { ShellMock.disable }
 
-    context 'a stubbed command' do
-      it 'intercepts system' do
-        stub = ShellMock.stub_command('ls').and_return("\n")
+    let!(:stub) { ShellMock.stub_command('ls').and_return("\n") }
 
-        expect(system('ls')).to eq true
+    it 'intercepts system' do
+      expect(system('ls')).to eq true
 
-        expect(stub).to have_been_called
-      end
+      expect(stub).to have_been_called
+    end
 
-      it 'intercepts backtick' do
-        stub = ShellMock.stub_command('ls').and_return("\n")
+    it 'intercepts backtick' do
+      expect(`ls`).to eq "\n"
 
-        expect(`ls`).to eq "\n"
+      expect(stub).to have_been_called
+    end
 
-        expect(stub).to have_been_called
+    context 'being expected once' do
+      before { system('ls') }
+
+      it 'is called once' do
+        expect(stub).to have_been_called.once
+        expect(stub).to have_been_called.times(1)
       end
     end
   end
 
   describe '::dont_let_commands_run' do
-    after { ShellMock.let_commands_run }
+    before do
+      ShellMock.enable
+      ShellMock.dont_let_commands_run
+    end
+
+    after do
+      ShellMock.let_commands_run
+      ShellMock.disable
+    end
 
     it 'prevents commands from running' do
-      ShellMock.dont_let_commands_run
-
       expect(ShellMock.let_commands_run?).to be false
       expect(ShellMock.dont_let_commands_run?).to be true
+
+      expect { system('ls') }.to raise_error ShellMock::NoStubSpecified
+      expect { `ls` }.to raise_error ShellMock::NoStubSpecified
     end
   end
 
   describe '::let_commands_run' do
-    it 'prevents commands from running' do
-      ShellMock.let_commands_run
+    before { ShellMock.let_commands_run }
 
+    it 'prevents commands from running' do
       expect(ShellMock.dont_let_commands_run?).to be false
       expect(ShellMock.let_commands_run?).to be true
+
+      expect(system('ls')).to eq true
+      expect(`ls`).to include "shell_mock.gemspec"
     end
   end
 
   describe '::disable' do
-    before { ShellMock.stub_command('ls') }
+    before do
+      ShellMock.enable
+      ShellMock.stub_command('ls')
+    end
+
+    after { ShellMock.disable }
 
     it 'clears the stub registry' do
       expect(ShellMock::StubRegistry.command_stubs).to_not be_empty

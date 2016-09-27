@@ -19,7 +19,8 @@ module ShellMock
   end
 
   def self.let_commands_run?
-    @let_commands_run.nil? ? true : @let_commands_run
+    @let_commands_run = true if @let_commands_run.nil?
+    @let_commands_run
   end
 
   def self.dont_let_commands_run?
@@ -29,21 +30,21 @@ module ShellMock
   def self.enable
     Kernel.module_exec do
       if Kernel.respond_to?(:__shell_mocked_system)
-        alias_method(:__un_shell_mocked_system, :system)
-        alias_method(:system, :__shell_mocked_system)
+        define_method(:__un_shell_mocked_system, &method(:system).to_proc)
+        define_method(:system, &method(:__shell_mocked_system).to_proc)
       end
 
       if Kernel.respond_to?(:__shell_mocked_backtick)
-        alias_method(:__un_shell_mocked_backtick, :`)
-        alias_method(:`, :__shell_mocked_backtick)
+        define_method(:__un_shell_mocked_backtick, &method(:`).to_proc)
+        define_method(:`, &method(:__shell_mocked_backtick).to_proc)
       end
     end
   end
 
   def self.disable
     Kernel.module_exec do
-      alias_method(:system, :__un_shell_mocked_system) if Kernel.respond_to?(:__un_shell_mocked_system)
-      alias_method(:`, :__un_shell_mocked_backtick)    if Kernel.respond_to?(:__un_shell_mocked_backtick)
+      define_method(:system, &method(:__un_shell_mocked_system).to_proc) if Kernel.respond_to?(:__un_shell_mocked_system)
+      define_method(:`, &method(:__un_shell_mocked_backtick).to_proc)    if Kernel.respond_to?(:__un_shell_mocked_backtick)
     end
 
     StubRegistry.clear
