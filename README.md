@@ -6,9 +6,9 @@ It's [webmock](http://github.com/bblimke/webmock) for shell commands. It's prett
 require 'shell_mock/rspec'
 
 describe 'something' do
-  stub = ShellMock.stub_command('ls').and_return("\n")
+  stub = ShellMock.stub_command('ls')
 
-  # something that involves shelling out & calling ls
+  expect(system('ls')).to eq true
 
   expect(stub).to have_been_called
 end
@@ -29,6 +29,18 @@ Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)`
 `less_than` is also an alias for `fewer_than`.
 
 Right now, only exact command string matches are supported.
+
+You can also set the output of the command invocation:
+
+```ruby
+describe 'something' do
+  stub = ShellMock.stub_commmand('ls').and_return("\n")
+
+  expect(`ls`).to eq "\n"
+
+  expect(stub).to have_been_called.once
+end
+```
 
 ## Installation
 
