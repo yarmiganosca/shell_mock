@@ -14,7 +14,7 @@ describe 'something' do
 end
 ```
 
-More complex expectations are also supported.
+### More complex expectations are also supported.
 
 Called exactly once: `expect(stub).to have_been_called.once`
 
@@ -30,7 +30,7 @@ Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)`
 
 Right now, only exact command string matches are supported.
 
-You can also set the output of the command invocation:
+### You can also set the output of the command invocation:
 
 ```ruby
 describe 'something' do
