@@ -1,7 +1,7 @@
 module ShellMock
   RSpec.describe "::stub_commmand" do
-    before { ShellMock.enable }
-    after { ShellMock.disable }
+    before { ShellMock.enable; ShellMock.let_commands_run }
+    after { ShellMock.disable; ShellMock.dont_let_commands_run }
 
     let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exit_code) }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
@@ -48,7 +48,7 @@ module ShellMock
     end
 
     it 'but not too close' do
-      expect(`ls $HOME/.ssh`).to_not eq "\n"
+      expect(`ls /`).to_not eq "\n"
 
       expect(home_stub.calls).to be_empty
       expect(stub.calls).to be_empty
