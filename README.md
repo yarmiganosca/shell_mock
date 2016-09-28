@@ -1,6 +1,6 @@
 # ShellMock
 
-It's [webmock](http://github.com/bblimke/webmock] for shell commands. It's pretty simple. You can do things like this:
+It's [webmock](http://github.com/bblimke/webmock) for shell commands. It's pretty simple. You can do things like this:
 
 ```ruby
 require 'shell_mock/rspec'
@@ -14,7 +14,7 @@ describe 'something' do
 end
 ```
 
-More complex expectations are also supported:
+More complex expectations are also supported.
 
 Called exactly once: `expect(stub).to have_been_called.once`
 
@@ -24,9 +24,7 @@ Called exactly `n` times: `expect(stub).to have_been_called.times(n)`
 
 Called more than `n` times: `expect(stub).to have_been_called.more_than(n)`
 
-Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)`
-
-`less_than` is also an alias for `fewer_than`.
+Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)` or `expect(stub).to have_been_called.less_than(n)`
 
 Right now, only exact command string matches are supported.
 
