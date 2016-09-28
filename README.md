@@ -1,8 +1,34 @@
 # ShellMock
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/shell_mock`. To experiment with that code, run `bin/console` for an interactive prompt.
+It's [webmock](http://github.com/bblimke/webmock] for shell commands. It's pretty simple. You can do things like this:
 
-TODO: Delete this and the text above, and describe your gem
+```ruby
+require 'shell_mock/rspec'
+
+describe 'something' do
+  stub = ShellMock.stub_command('ls').and_return("\n")
+
+  # something that involves shelling out & calling ls
+
+  expect(stub).to have_been_called
+end
+```
+
+More complex expectations are also supported:
+
+Called exactly once: `expect(stub).to have_been_called.once`
+
+Not called: `expect(stub).to_not have_been_called` or `expect(stub).to have_been_called.never`
+
+Called exactly `n` times: `expect(stub).to have_been_called.times(n)`
+
+Called more than `n` times: `expect(stub).to have_been_called.more_than(n)`
+
+Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)`
+
+`less_than` is also an alias for `fewer_than`.
+
+Right now, only exact command string matches are supported.
 
 ## Installation
 
@@ -20,10 +46,6 @@ Or install it yourself as:
 
     $ gem install shell_mock
 
-## Usage
-
-TODO: Write usage instructions here
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -32,8 +54,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/shell_mock. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/yarmiganosca/shell_mock. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
