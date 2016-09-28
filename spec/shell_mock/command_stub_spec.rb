@@ -3,7 +3,7 @@ module ShellMock
     before { ShellMock.enable }
     after { ShellMock.disable }
 
-    let!(:stub) { ShellMock.stub_command('ls').and_return("\n") }
+    let!(:stub)      { ShellMock.stub_command('ls').and_return("\n") }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
 
     it 'intercepts system' do
