@@ -3,14 +3,14 @@ module ShellMock
 
   StubRegistry.instance_exec do
     def register_command_stub(command_stub)
-      command_stubs.insert(0, command_stub)
-
+      command_stubs << command_stub
       command_stub
     end
 
     def stub_matching(env, command, options)
       matching_stubs = command_stubs.select do |command_stub|
         command_stub.env <= env &&
+          command_stub.command <= command &&
           command.start_with?(command_stub.command) &&
           command_stub.options <= options
       end
