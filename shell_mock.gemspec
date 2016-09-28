@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{WebMock for shell commands}
   spec.description   = spec.summary
-  spec.homepage      = "https;//www.github.com/yarmiganosca/shell_mock"
+  spec.homepage      = "http://www.github.com/yarmiganosca/shell_mock"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
