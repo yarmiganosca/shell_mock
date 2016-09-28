@@ -35,10 +35,6 @@ module ShellMock
       self
     end
 
-    def matches?(candidate_command)
-      candidate_command.include?(command)
-    end
-
     def side_effect
       @side_effect || proc {}
     end

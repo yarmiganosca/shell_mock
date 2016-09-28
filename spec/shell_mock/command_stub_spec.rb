@@ -10,12 +10,14 @@ module ShellMock
       expect(system('ls')).to eq true
 
       expect(stub.calls).to_not be_empty
+      expect(home_stub.calls).to be_empty
     end
 
     it 'intercepts backtick' do
       expect(`ls`).to eq "\n"
 
       expect(stub.calls).to_not be_empty
+      expect(home_stub.calls).to be_empty
     end
 
     it 'uses the "closest" stub' do

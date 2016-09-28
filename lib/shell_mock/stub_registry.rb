@@ -11,11 +11,11 @@ module ShellMock
     def stub_matching(env, command, options)
       matching_stubs = command_stubs.select do |command_stub|
         command_stub.env <= env &&
-          command_stub.matches?(command) &&
+          command.start_with?(command_stub.command) &&
           command_stub.options <= options
       end
 
-      matching_stubs.first
+      matching_stubs.max_by { |command_stub| command_stub.command.size }
     end
 
     def command_stubs
