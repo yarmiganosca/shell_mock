@@ -10,9 +10,10 @@ module Kernel
 
     if stub
       stub.side_effect.call
+      `exit #{stub.exitstatus}`
       stub.called_with(env, command, options)
 
-      return stub.return_code == 0
+      return stub.exitstatus == 0
     else
       if ShellMock.let_commands_run?
         __un_shell_mocked_system(env, command, **options)
@@ -27,6 +28,7 @@ module Kernel
 
     if stub
       stub.side_effect.call
+      `exit #{stub.exitstatus}`
       stub.called_with({}, command, {})
 
       return stub.expected_output

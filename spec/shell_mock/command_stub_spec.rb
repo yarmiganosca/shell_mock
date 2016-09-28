@@ -3,8 +3,10 @@ module ShellMock
     before { ShellMock.enable }
     after { ShellMock.disable }
 
-    let!(:stub)      { ShellMock.stub_command('ls').and_return("\n") }
+    let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exit_code) }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
+
+    let(:exit_code) { 0 }
 
     it 'intercepts system' do
       expect(system('ls')).to eq true
@@ -18,6 +20,24 @@ module ShellMock
 
       expect(stub.calls).to_not be_empty
       expect(home_stub.calls).to be_empty
+    end
+
+    context "with a stubbed good exit" do
+      it '"sets" the appropriate exit code for $?' do
+        expect(system('ls')).to eq true
+
+        expect($?.exitstatus).to eq stub.exitstatus
+      end
+    end
+
+    context "with a stubbed bad exit" do
+      let(:exit_code) { 4 }
+
+      it '"sets" the appropriate exit code for $?' do
+        expect(system('ls')).to eq false
+
+        expect($?.exitstatus).to eq stub.exitstatus
+      end
     end
 
     it 'uses the "closest" stub' do

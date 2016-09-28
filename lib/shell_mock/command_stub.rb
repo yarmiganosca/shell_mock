@@ -2,7 +2,7 @@ require 'shell_mock/call_verifier'
 
 module ShellMock
   class CommandStub
-    attr_reader :command, :expected_output, :return_code
+    attr_reader :command, :expected_output, :exitstatus
 
     def initialize(command)
       @command = command
@@ -28,9 +28,15 @@ module ShellMock
       @options || {}
     end
 
-    def and_return(expected_output, return_code: 0)
+    def and_return(expected_output)
       @expected_output = expected_output
-      @return_code     = return_code
+      @exitstatus ||= 0
+
+      self
+    end
+
+    def and_exit(exitstatus)
+      @exitstatus = exitstatus
 
       self
     end
