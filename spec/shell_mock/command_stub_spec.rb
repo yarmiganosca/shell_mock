@@ -26,5 +26,12 @@ module ShellMock
       expect(home_stub.calls).to_not be_empty
       expect(stub.calls).to be_empty
     end
+
+    it 'but not too close' do
+      expect(`ls $HOME/.ssh`).to_not eq "\n"
+
+      expect(home_stub.calls).to be_empty
+      expect(stub.calls).to be_empty
+    end
   end
 end

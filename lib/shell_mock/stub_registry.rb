@@ -10,12 +10,13 @@ module ShellMock
     def stub_matching(env, command, options)
       matching_stubs = command_stubs.select do |command_stub|
         command_stub.env <= env &&
-          command_stub.command <= command &&
-          command.start_with?(command_stub.command) &&
-          command_stub.options <= options
+          command_stub.options <= options &&
+          command_stub.command == command
       end
 
-      matching_stubs.max_by { |command_stub| command_stub.command.size }
+      matching_stubs.max_by do |command_stub|
+        [env.size, options.size]
+      end
     end
 
     def command_stubs
