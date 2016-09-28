@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Chris Hoffman"]
   spec.email         = ["yarmiganosca@gmail.com"]
 
-  spec.summary       = %q{WebMock for shelling out}
+  spec.summary       = %q{WebMock for shell commands}
   spec.description   = spec.summary
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https;//www.github.com/yarmiganosca/shell_mock"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
