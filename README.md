@@ -33,6 +33,8 @@ Right now, only exact command string matches are supported.
 ### You can also set the output of the command invocation:
 
 ```ruby
+require 'shell_mock/rspec'
+
 describe 'something' do
   stub = ShellMock.stub_commmand('ls').and_return("\n")
 
