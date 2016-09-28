@@ -36,7 +36,7 @@ module ShellMock
       it '"sets" the appropriate exit code for $?' do
         expect(system('ls')).to eq false
 
-        expect($?.exitstatus).to eq stub.exitstatus
+        expect($?.exitstatus).to eq exit_code
       end
     end
 
