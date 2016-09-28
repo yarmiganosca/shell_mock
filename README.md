@@ -25,6 +25,7 @@ Called exactly `n` times: `expect(stub).to have_been_called.times(n)`
 Called more than `n` times: `expect(stub).to have_been_called.more_than(n)`
 
 Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)`
+
 `less_than` is also an alias for `fewer_than`.
 
 Right now, only exact command string matches are supported.
