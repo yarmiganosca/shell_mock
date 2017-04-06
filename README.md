@@ -14,6 +14,8 @@ describe 'something' do
 end
 ```
 
+Currently, `` Kernel#` ``, `Kernel#exec`, and `Kernel#system` are supported. Nothing in the `Open3` standard library module is currently supported.
+
 ### More complex expectations are also supported.
 
 Called exactly once: `expect(stub).to have_been_called.once`
