@@ -2,10 +2,13 @@ require 'shell_mock/call_verifier'
 
 module ShellMock
   class CommandStub
-    attr_reader :command, :expected_output, :exitstatus
+    attr_reader :command, :expected_output, :exitstatus, :env, :options, :side_effect
 
     def initialize(command)
-      @command = command
+      @command     = command
+      @env         = {}
+      @options     = {}
+      @side_effect = proc {}
     end
 
     def with_env(env)
@@ -14,18 +17,10 @@ module ShellMock
       self
     end
 
-    def env
-      @env || {}
-    end
-
     def with_option(option)
       @options = options
 
       self
-    end
-
-    def options
-      @options || {}
     end
 
     def and_return(expected_output)
@@ -39,10 +34,6 @@ module ShellMock
       @exitstatus = exitstatus
 
       self
-    end
-
-    def side_effect
-      @side_effect || proc {}
     end
 
     def calls
