@@ -21,13 +21,21 @@ RSpec.describe ShellMock do
 
   describe '::let_commands_run' do
     before { ShellMock.let_commands_run }
+    after  { File.delete('foo') if File.exist?('foo') }
 
-    it 'prevents commands from running' do
+    it 'indicates that it lets commands run' do
       expect(ShellMock.dont_let_commands_run?).to be false
       expect(ShellMock.let_commands_run?).to be true
+    end
 
-      expect(system('ls')).to eq true
-      expect(`ls`).to include "shell_mock.gemspec"
+    it 'lets system run' do
+      expect(system('touch foo')).to eq true
+      expect(Pathname.new('foo')).to exist
+    end
+
+    it 'lets backtick run' do
+      `touch foo`
+      expect(Pathname.new('foo')).to exist
     end
   end
 
