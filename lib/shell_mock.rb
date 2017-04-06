@@ -29,22 +29,26 @@ module ShellMock
 
   def self.enable
     Kernel.module_exec do
-      if Kernel.respond_to?(:__shell_mocked_system)
-        define_method(:__un_shell_mocked_system, &method(:system).to_proc)
-        define_method(:system, &method(:__shell_mocked_system).to_proc)
-      end
-
-      if Kernel.respond_to?(:__shell_mocked_backtick)
-        define_method(:__un_shell_mocked_backtick, &method(:`).to_proc)
-        define_method(:`, &method(:__shell_mocked_backtick).to_proc)
+      [
+        [:system, :__un_shell_mocked_system,   :__shell_mocked_system],
+        [:`,      :__un_shell_mocked_backtick, :__shell_mocked_backtick],
+      ].each do |real_name, aliased_name, replacement_name|
+        if respond_to?(replacement_name)
+          define_method(aliased_name, &method(real_name).to_proc)
+          define_method(real_name,    &method(replacement_name).to_proc)
+        end
       end
     end
   end
 
   def self.disable
     Kernel.module_exec do
-      define_method(:system, &method(:__un_shell_mocked_system).to_proc) if Kernel.respond_to?(:__un_shell_mocked_system)
-      define_method(:`, &method(:__un_shell_mocked_backtick).to_proc)    if Kernel.respond_to?(:__un_shell_mocked_backtick)
+      [
+        [:system, :__un_shell_mocked_system],
+        [:`,      :__un_shell_mocked_backtick],
+      ].each do |real_name, aliased_name|
+        define_method(real_name, &method(aliased_name).to_proc) if respond_to?(aliased_name)
+      end
     end
 
     StubRegistry.clear
