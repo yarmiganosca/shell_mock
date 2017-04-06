@@ -10,11 +10,20 @@ RSpec.describe ShellMock do
       ShellMock.disable
     end
 
-    it 'prevents commands from running' do
+    it 'indicates that it prevents commands from running' do
       expect(ShellMock.let_commands_run?).to be false
       expect(ShellMock.dont_let_commands_run?).to be true
+    end
 
+    it 'stops system' do
       expect { system('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops exec' do
+      expect { exec('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops backtick' do
       expect { `ls` }.to raise_error ShellMock::NoStubSpecified
     end
   end
@@ -35,6 +44,14 @@ RSpec.describe ShellMock do
 
     it 'lets backtick run' do
       `touch foo`
+      expect(Pathname.new('foo')).to exist
+    end
+
+    it 'lets exec run' do
+      # we need to fork because exec replaces the calling process with the subprocess
+      child = Process.fork { exec('touch foo') }
+      Process.wait(child)
+
       expect(Pathname.new('foo')).to exist
     end
   end
