@@ -31,8 +31,13 @@ module ShellMock
     Kernel.module_exec do
       ShellMock.alias_specifications.each do |spec|
         if respond_to?(spec.replacement)
+          remove_method(spec.alias_for_original) if respond_to?(spec.alias_for_original) # for warnings
+
           define_method(spec.alias_for_original, &method(spec.original).to_proc)
-          define_method(spec.original,           &method(spec.replacement).to_proc)
+
+          remove_method(spec.original) # for warnings
+
+          define_method(spec.original, &method(spec.replacement).to_proc)
         end
       end
     end
@@ -42,6 +47,8 @@ module ShellMock
     Kernel.module_exec do
       ShellMock.alias_specifications.each do |spec|
         if respond_to?(spec.alias_for_original)
+          remove_method(spec.original) # for warnings
+
           define_method(spec.original, &method(spec.alias_for_original).to_proc)
         end
       end
