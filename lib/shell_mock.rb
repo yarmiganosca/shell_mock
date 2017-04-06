@@ -29,13 +29,10 @@ module ShellMock
 
   def self.enable
     Kernel.module_exec do
-      [
-        [:system, :__un_shell_mocked_system,   :__shell_mocked_system],
-        [:`,      :__un_shell_mocked_backtick, :__shell_mocked_backtick],
-      ].each do |real_name, aliased_name, replacement_name|
-        if respond_to?(replacement_name)
-          define_method(aliased_name, &method(real_name).to_proc)
-          define_method(real_name,    &method(replacement_name).to_proc)
+      ShellMock.alias_specifications.each do |spec|
+        if respond_to?(spec.replacement)
+          define_method(spec.alias_for_original, &method(spec.original).to_proc)
+          define_method(spec.original,           &method(spec.replacement).to_proc)
         end
       end
     end
@@ -43,14 +40,23 @@ module ShellMock
 
   def self.disable
     Kernel.module_exec do
-      [
-        [:system, :__un_shell_mocked_system],
-        [:`,      :__un_shell_mocked_backtick],
-      ].each do |real_name, aliased_name|
-        define_method(real_name, &method(aliased_name).to_proc) if respond_to?(aliased_name)
+      ShellMock.alias_specifications.each do |spec|
+        if respond_to?(spec.alias_for_original)
+          define_method(spec.original, &method(spec.alias_for_original).to_proc)
+        end
       end
     end
 
     StubRegistry.clear
+  end
+
+  AliasSpecification = Struct.new(:original, :alias_for_original, :replacement)
+
+  def self.alias_specifications
+    [
+      AliasSpecification.new(:system, :__un_shell_mocked_system,   :__shell_mocked_system),
+      AliasSpecification.new(:exec,   :__un_shell_mocked_exec,     :__shell_mocked_exec),
+      AliasSpecification.new(:`,      :__un_shell_mocked_backtick, :__shell_mocked_backtick),
+    ]
   end
 end
