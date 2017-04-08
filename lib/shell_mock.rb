@@ -1,7 +1,8 @@
 require "shell_mock/version"
 require 'shell_mock/stub_registry'
 require 'shell_mock/command_stub'
-require 'shell_mock/core_ext/kernel'
+require 'shell_mock/monkey_patch'
+require 'shell_mock/core_ext/module'
 
 module ShellMock
   def self.stub_command(command)
@@ -28,28 +29,58 @@ module ShellMock
   end
 
   def self.enable
-    Kernel.module_exec do
-      ShellMock.alias_specifications.each do |spec|
-        if respond_to?(spec.replacement)
-          remove_method(spec.alias_for_original) if respond_to?(spec.alias_for_original) # for warnings
+    ShellMock.monkey_patches.each do |patch|
+      Kernel.send(:alias_method, patch.alias_for_original, patch.original)
 
-          define_method(spec.alias_for_original, &method(spec.original).to_proc)
+      begin
+        Kernel.send(:remove_method, patch.original) # for warnings
+      rescue NameError
+      end
 
-          remove_method(spec.original) # for warnings
+      Kernel.send(:define_method, patch.original, &patch.to_proc)
 
-          define_method(spec.original, &method(spec.replacement).to_proc)
+      Kernel.eigenclass_exec do
+        send(:alias_method, patch.alias_for_original, patch.original)
+
+        begin
+          send(:remove_method, patch.original) # for warnings
+        rescue NameError
         end
+
+        send(:define_method, patch.original, &patch.to_proc)
       end
     end
   end
 
   def self.disable
-    Kernel.module_exec do
-      ShellMock.alias_specifications.each do |spec|
-        if respond_to?(spec.alias_for_original)
-          remove_method(spec.original) # for warnings
+    ShellMock.monkey_patches.each do |patch|
+      if Object.new.respond_to?(patch.alias_for_original, true)
+        begin
+          Kernel.send(:remove_method, patch.original) # for warnings
+        rescue NameError
+        end
 
-          define_method(spec.original, &method(spec.alias_for_original).to_proc)
+        Kernel.send(:alias_method, patch.original, patch.alias_for_original)
+
+        begin
+          Kernel.send(:remove_method, patch.alias_for_original)
+        rescue NameError
+        end
+      end
+
+      if Kernel.respond_to?(patch.alias_for_original, true)
+        Kernel.eigenclass_exec do
+          begin
+            send(:remove_method, patch.original) # for warnings
+          rescue NameError
+          end
+
+          send(:alias_method, patch.original, patch.alias_for_original)
+
+          begin
+            send(:remove_method, patch.alias_for_original)
+          rescue NameError
+          end
         end
       end
     end
@@ -57,13 +88,7 @@ module ShellMock
     StubRegistry.clear
   end
 
-  AliasSpecification = Struct.new(:original, :alias_for_original, :replacement)
-
-  def self.alias_specifications
-    [
-      AliasSpecification.new(:system, :__un_shell_mocked_system,   :__shell_mocked_system),
-      AliasSpecification.new(:exec,   :__un_shell_mocked_exec,     :__shell_mocked_exec),
-      AliasSpecification.new(:`,      :__un_shell_mocked_backtick, :__shell_mocked_backtick),
-    ]
+  def self.monkey_patches
+    [SystemMonkeyPatch, ExecMonkeyPatch, BacktickMonkeyPatch]
   end
 end

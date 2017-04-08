@@ -1,7 +1,10 @@
 module ShellMock
   RSpec.describe "::stub_commmand" do
-    before { ShellMock.enable; ShellMock.let_commands_run }
-    after { ShellMock.disable; ShellMock.dont_let_commands_run }
+    before do
+      ShellMock.enable
+      ShellMock.let_commands_run
+    end
+    after { ShellMock.disable }
 
     let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exit_code) }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }

@@ -1,7 +1,10 @@
 require 'shell_mock/rspec'
 
 RSpec.describe ShellMock do
-  before { ShellMock.enable }
+  before do
+    ShellMock.enable
+    ShellMock.dont_let_commands_run
+  end
   after { ShellMock.disable }
 
   let!(:stub) { ShellMock.stub_command('ls').and_return("\n") }

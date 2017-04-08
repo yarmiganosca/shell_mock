@@ -1,7 +1,22 @@
 require 'shell_mock/no_stub_specified'
 
-module Kernel
-  def __shell_mocked_system(env, command = nil, **options)
+module ShellMock
+  class MonkeyPatch
+    attr_reader :original, :alias_for_original
+
+    def initialize(original_name, interpolable_name = original_name, &block)
+      @original           = original_name
+      @alias_for_original = "__un_shell_mocked_#{interpolable_name}"
+      @replacement        = "__shell_mocked_#{interpolable_name}"
+      @block              = block
+    end
+
+    def to_proc
+      @block.to_proc
+    end
+  end
+
+  SystemMonkeyPatch = MonkeyPatch.new(:system) do |env, command = nil, **options|
     env, command = {}, env if command.nil?
 
     # other arg manipulation
@@ -10,7 +25,7 @@ module Kernel
 
     if stub
       stub.side_effect.call
-      `exit #{stub.exitstatus}`
+      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
       stub.called_with(env, command, options)
 
       return stub.exitstatus == 0
@@ -27,7 +42,7 @@ module Kernel
   # have very similar if not identical method signatures. I'm not sure
   # whether extracting the commonalities would be worth it or just
   # confuse.
-  def __shell_mocked_exec(env, command = nil, **options)
+  ExecMonkeyPatch = MonkeyPatch.new(:exec) do |env, command = nil, **options|
     env, command = {}, env if command.nil?
 
     # other arg manipulation
@@ -36,7 +51,7 @@ module Kernel
 
     if stub
       stub.side_effect.call
-      `exit #{stub.exitstatus}`
+      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
       stub.called_with(env, command, options)
 
       return stub.exitstatus == 0
@@ -49,12 +64,12 @@ module Kernel
     end
   end
 
-  def __shell_mocked_backtick(command)
+  BacktickMonkeyPatch = MonkeyPatch.new(:`, :backtick) do |command|
     stub = ShellMock::StubRegistry.stub_matching({}, command, {})
 
     if stub
       stub.side_effect.call
-      `exit #{stub.exitstatus}`
+      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
       stub.called_with({}, command, {})
 
       return stub.expected_output
