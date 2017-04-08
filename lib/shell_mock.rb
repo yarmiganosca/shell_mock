@@ -39,16 +39,14 @@ module ShellMock
 
       Kernel.send(:define_method, patch.original, &patch.to_proc)
 
-      Kernel.eigenclass_exec do
-        send(:alias_method, patch.alias_for_original, patch.original)
+      Kernel.eigenclass.send(:alias_method, patch.alias_for_original, patch.original)
 
-        begin
-          send(:remove_method, patch.original) # for warnings
-        rescue NameError
-        end
-
-        send(:define_method, patch.original, &patch.to_proc)
+      begin
+        Kernel.eigenclass.send(:remove_method, patch.original) # for warnings
+      rescue NameError
       end
+
+      Kernel.eigenclass.send(:define_method, patch.original, &patch.to_proc)
     end
   end
 
@@ -69,18 +67,16 @@ module ShellMock
       end
 
       if Kernel.respond_to?(patch.alias_for_original, true)
-        Kernel.eigenclass_exec do
-          begin
-            send(:remove_method, patch.original) # for warnings
-          rescue NameError
-          end
+        begin
+          Kernel.eigenclass.send(:remove_method, patch.original) # for warnings
+        rescue NameError
+        end
 
-          send(:alias_method, patch.original, patch.alias_for_original)
+        Kernel.eigenclass.send(:alias_method, patch.original, patch.alias_for_original)
 
-          begin
-            send(:remove_method, patch.alias_for_original)
-          rescue NameError
-          end
+        begin
+          Kernel.eigenclass.send(:remove_method, patch.alias_for_original)
+        rescue NameError
         end
       end
     end
