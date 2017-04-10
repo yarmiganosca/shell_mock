@@ -23,16 +23,16 @@ RSpec.describe ShellMock do
       expect { `ls` }.to raise_error ShellMock::NoStubSpecified
     end
 
-    it 'stops Kernel#exec' do
-      expect { exec('ls') }.to raise_error ShellMock::NoStubSpecified
-    end
-
     it 'stops Kernel.system' do
       expect { Kernel.system('ls') }.to raise_error ShellMock::NoStubSpecified
     end
 
     it 'stops Kernel.`' do
       expect { Kernel.send("`", "ls") }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Kernel#exec' do
+      expect { exec('ls') }.to raise_error ShellMock::NoStubSpecified
     end
 
     it 'stops Kernel.exec' do
@@ -53,16 +53,6 @@ RSpec.describe ShellMock do
       expect(Pathname.new('foo')).to exist
     end
 
-    it 'lets Kernel#exec run' do
-      expect(Pathname.new('foo')).to_not exist
-
-      # we need to fork because exec replaces the calling process with the subprocess
-      child = Process.fork { exec('touch foo') }
-      Process.wait(child)
-
-      expect(Pathname.new('foo')).to exist
-    end
-
     it 'lets Kernel.system run' do
       expect(Pathname.new('foo')).to_not exist
       expect(Kernel.system('touch foo')).to eq true
@@ -75,6 +65,16 @@ RSpec.describe ShellMock do
       expect(Pathname.new('foo')).to exist
     end
 
+    it 'lets Kernel#exec run' do
+      expect(Pathname.new('foo')).to_not exist
+
+      # we need to fork because exec replaces the calling process with the subprocess
+      child = Process.fork { exec('touch foo') }
+      Process.wait(child)
+
+      expect(Pathname.new('foo')).to exist
+    end
+
     it 'lets Kernel.exec run' do
       expect(Pathname.new('foo')).to_not exist
 
@@ -83,7 +83,7 @@ RSpec.describe ShellMock do
       Process.wait(child)
 
       expect(Pathname.new('foo')).to exist
-    end    
+    end
   end
 
   describe '::let_commands_run' do
