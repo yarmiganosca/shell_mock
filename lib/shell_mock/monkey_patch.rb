@@ -14,6 +14,31 @@ module ShellMock
     def to_proc
       @block.to_proc
     end
+
+    def enable_for(class_or_module)
+      class_or_module.send(:alias_method, alias_for_original, original)
+
+      begin
+        class_or_module.send(:remove_method, original) # for warnings
+      rescue NameError
+      end
+
+      class_or_module.send(:define_method, original, &to_proc)
+    end
+
+    def disable_for(class_or_module)
+      begin
+        class_or_module.send(:remove_method, original) # for warnings
+      rescue NameError
+      end
+
+      class_or_module.send(:alias_method, original, alias_for_original)
+
+      begin
+        class_or_module.send(:remove_method, alias_for_original)
+      rescue NameError
+      end
+    end
   end
 
   SystemMonkeyPatch = MonkeyPatch.new(:system) do |env, command = nil, **options|
@@ -25,8 +50,8 @@ module ShellMock
 
     if stub
       stub.side_effect.call
-      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
       stub.called_with(env, command, options)
+      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
 
       return stub.exitstatus == 0
     else
@@ -51,10 +76,9 @@ module ShellMock
 
     if stub
       stub.side_effect.call
-      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
       stub.called_with(env, command, options)
 
-      return stub.exitstatus == 0
+      exit stub.exitstatus
     else
       if ShellMock.let_commands_run?
         __un_shell_mocked_exec(env, command, **options)

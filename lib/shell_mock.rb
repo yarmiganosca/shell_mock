@@ -30,55 +30,15 @@ module ShellMock
 
   def self.enable
     ShellMock.monkey_patches.each do |patch|
-      Kernel.send(:alias_method, patch.alias_for_original, patch.original)
-
-      begin
-        Kernel.send(:remove_method, patch.original) # for warnings
-      rescue NameError
-      end
-
-      Kernel.send(:define_method, patch.original, &patch.to_proc)
-
-      Kernel.eigenclass.send(:alias_method, patch.alias_for_original, patch.original)
-
-      begin
-        Kernel.eigenclass.send(:remove_method, patch.original) # for warnings
-      rescue NameError
-      end
-
-      Kernel.eigenclass.send(:define_method, patch.original, &patch.to_proc)
+      patch.enable_for(Kernel.eigenclass) unless Kernel.respond_to?(patch.alias_for_original, true)
+      patch.enable_for(Kernel)            unless Object.new.respond_to?(patch.alias_for_original, true)
     end
   end
 
   def self.disable
     ShellMock.monkey_patches.each do |patch|
-      if Object.new.respond_to?(patch.alias_for_original, true)
-        begin
-          Kernel.send(:remove_method, patch.original) # for warnings
-        rescue NameError
-        end
-
-        Kernel.send(:alias_method, patch.original, patch.alias_for_original)
-
-        begin
-          Kernel.send(:remove_method, patch.alias_for_original)
-        rescue NameError
-        end
-      end
-
-      if Kernel.respond_to?(patch.alias_for_original, true)
-        begin
-          Kernel.eigenclass.send(:remove_method, patch.original) # for warnings
-        rescue NameError
-        end
-
-        Kernel.eigenclass.send(:alias_method, patch.original, patch.alias_for_original)
-
-        begin
-          Kernel.eigenclass.send(:remove_method, patch.alias_for_original)
-        rescue NameError
-        end
-      end
+      patch.disable_for(Kernel.eigenclass) if Kernel.respond_to?(patch.alias_for_original, true)
+      patch.disable_for(Kernel)            if Object.new.respond_to?(patch.alias_for_original, true)
     end
 
     StubRegistry.clear
