@@ -99,14 +99,15 @@ RSpec.describe ShellMock do
   end
 
   describe '::disable' do
-    before do
-      ShellMock.enable
-      ShellMock.stub_command('ls')
+    after do
+      ShellMock.disable
+      File.delete('foo') if File.exist?('foo')
     end
 
-    after { File.delete('foo') if File.exist?('foo') }
-
     it 'clears the stub registry' do
+      ShellMock.enable
+      ShellMock.stub_command('touch foo')
+
       expect(ShellMock::StubRegistry.command_stubs).to_not be_empty
 
       ShellMock.disable
@@ -116,6 +117,66 @@ RSpec.describe ShellMock do
 
     it_behaves_like "commands are allowed to run" do
       before { ShellMock.disable }
+    end
+
+    describe 'the aliased' do
+      before do
+        ShellMock.enable
+        ShellMock.disable
+      end
+
+      it 'Kernel#__un_shell_mocked_system has been removed' do
+        expect(Object.new.respond_to?(:__un_shell_mocked_system, true)).to eq false
+      end
+
+      it 'Kernel#__un_shell_mocked_exec has been removed' do
+        expect(Object.new.respond_to?(:__un_shell_mocked_exec, true)).to eq false
+      end
+
+      it 'Kernel#__un_shell_mocked_backtick has been removed' do
+        expect(Object.new.respond_to?(:__un_shell_mocked_backtick, true)).to eq false
+      end
+
+      it 'Kernel.__un_shell_mocked_system has been removed' do
+        expect(Kernel.respond_to?(:__un_shell_mocked_system, true)).to eq false
+      end
+
+      it 'Kernel.__un_shell_mocked_exec has been removed' do
+        expect(Kernel.respond_to?(:__un_shell_mocked_exec, true)).to eq false
+      end
+
+      it 'Kernel.__un_shell_mocked_backtick has been removed' do
+        expect(Kernel.respond_to?(:__un_shell_mocked_backtick, true)).to eq false
+      end
+    end
+  end
+
+  describe '::enable' do
+    before { ShellMock.enable }
+    after  { ShellMock.disable }
+
+    it 'Kernel#__un_shell_mocked_system has been defined' do
+      expect(Object.new.respond_to?(:__un_shell_mocked_system, true)).to eq true
+    end
+
+    it 'Kernel#__un_shell_mocked_exec has been defined' do
+      expect(Object.new.respond_to?(:__un_shell_mocked_exec, true)).to eq true
+    end
+
+    it 'Kernel#__un_shell_mocked_backtick has been defined' do
+      expect(Object.new.respond_to?(:__un_shell_mocked_backtick, true)).to eq true
+    end
+
+    it 'Kernel.__un_shell_mocked_system has been defined' do
+      expect(Kernel.respond_to?(:__un_shell_mocked_system, true)).to eq true
+    end
+
+    it 'Kernel.__un_shell_mocked_exec has been defined' do
+      expect(Kernel.respond_to?(:__un_shell_mocked_exec, true)).to eq true
+    end
+
+    it 'Kernel.__un_shell_mocked_backtick has been defined' do
+      expect(Kernel.respond_to?(:__un_shell_mocked_backtick, true)).to eq true
     end
   end
 end
