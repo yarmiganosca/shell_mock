@@ -14,7 +14,7 @@ describe 'something' do
 end
 ```
 
-Currently, `` Kernel#` ``, `Kernel#exec`, and `Kernel#system` are supported. Nothing in the `Open3` standard library module is currently supported.
+Currently, `` ` ``, `exec`, and `system` are supported. Nothing in the `Open3` standard library module is currently supported.
 
 ### More complex expectations are also supported.
 
