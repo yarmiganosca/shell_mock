@@ -2,9 +2,9 @@
 
 * add `with_side_effect(&blk)` for specifying desired side effects
 
-## NEXT RELEASE
+## RELEASE 0.3.2
 
-* FIX: fixed aliased `exec`'s handling of exit statuses
+* FIX: fixed patched `exec`'s handling of exit statuses
 
 ## RELEASE 0.3.1
 
