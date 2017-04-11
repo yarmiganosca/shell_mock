@@ -9,6 +9,7 @@ module ShellMock
       @env         = {}
       @options     = {}
       @side_effect = proc {}
+      @exitstatus  = 0
     end
 
     def with_env(env)
@@ -25,7 +26,7 @@ module ShellMock
 
     def and_return(expected_output)
       @expected_output = expected_output
-      @exitstatus ||= 0
+      @exitstatus      = 0
 
       self
     end

@@ -2,6 +2,10 @@
 
 * add `with_side_effect(&blk)` for specifying desired side effects
 
+## NEXT RELEASE
+
+* FIX: fixed aliased `exec`'s handling of exit statuses
+
 ## RELEASE 0.3.1
 
 * FIX: ``Kernel.` ``, `Kernel.exec`, and `Kernel.system` are now all supported as well. This is useful to testing thor suites that shell out, because thor (for reasons passing understanding) redefines `#exec`, so we have to resort to `Kernel.exec`.

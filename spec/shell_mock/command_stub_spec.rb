@@ -9,10 +9,10 @@ module ShellMock
     let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exit_code) }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
 
-    let(:exit_code) { 0 }
+    let(:exit_code) { 42 }
 
     it 'intercepts system' do
-      expect(system('ls')).to eq true
+      expect(system('ls')).to eq (exit_code == 0)
 
       expect(stub.calls).to_not be_empty
       expect(home_stub.calls).to be_empty
@@ -26,8 +26,15 @@ module ShellMock
     end
 
     context "with a stubbed good exit" do
-      it '"sets" the appropriate exit code for $?' do
-        expect(system('ls')).to eq true
+      it '"sets" the appropriate exit code for $? with system' do
+        expect(system('ls')).to eq (exit_code == 0)
+
+        expect($?.exitstatus).to eq stub.exitstatus
+      end
+
+      it "sets the appropriate exit code for $? with exec do" do
+        child = Process.fork { exec('ls') }
+        Process.wait(child)
 
         expect($?.exitstatus).to eq stub.exitstatus
       end
