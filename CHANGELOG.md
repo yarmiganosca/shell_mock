@@ -2,6 +2,10 @@
 
 * add `with_side_effect(&blk)` for specifying desired side effects
 
+## RELEASE 0.3.3
+
+* FIX: `exec`'d calls now registered as having been called
+
 ## RELEASE 0.3.2
 
 * FIX: fixed patched `exec`'s handling of exit statuses
