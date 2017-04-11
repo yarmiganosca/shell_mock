@@ -1,3 +1,5 @@
+require 'shell_mock/rspec'
+
 module ShellMock
   RSpec.describe "::stub_commmand" do
     before do
@@ -6,13 +8,13 @@ module ShellMock
     end
     after { ShellMock.disable }
 
-    let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exit_code) }
+    let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exitstatus) }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
 
-    let(:exit_code) { 42 }
+    let(:exitstatus) { 0 }
 
     it 'intercepts system' do
-      expect(system('ls')).to eq (exit_code == 0)
+      expect(system('ls')).to eq true
 
       expect(stub.calls).to_not be_empty
       expect(home_stub.calls).to be_empty
@@ -27,26 +29,35 @@ module ShellMock
 
     context "with a stubbed good exit" do
       it '"sets" the appropriate exit code for $? with system' do
-        expect(system('ls')).to eq (exit_code == 0)
+        expect(system('ls')).to eq true
 
-        expect($?.exitstatus).to eq stub.exitstatus
+        expect($?.exitstatus).to eq exitstatus
+        expect(stub).to have_been_called
       end
 
       it "sets the appropriate exit code for $? with exec do" do
-        child = Process.fork { exec('ls') }
-        Process.wait(child)
+        Process.wait(fork { exec('ls') })
 
-        expect($?.exitstatus).to eq stub.exitstatus
+        expect($?.exitstatus).to eq exitstatus
+        expect(stub).to have_been_called
       end
     end
 
     context "with a stubbed bad exit" do
-      let(:exit_code) { 4 }
+      let(:exitstatus) { 4 }
 
-      it '"sets" the appropriate exit code for $?' do
+      it '"sets" the appropriate exit code for $? with system' do
         expect(system('ls')).to eq false
 
-        expect($?.exitstatus).to eq exit_code
+        expect($?.exitstatus).to eq exitstatus
+        expect(stub).to have_been_called
+      end
+
+      it "sets the appropriate exit code for $? with exec do" do
+        Process.wait(fork { exec('ls') })
+
+        expect($?.exitstatus).to eq exitstatus
+        expect(stub).to have_been_called
       end
     end
 
