@@ -1,6 +1,9 @@
 ## ROADMAP 1.0.0
 
-* add `with_side_effect(&blk)` for specifying desired side effects
+* add `CommandStub#with_side_effect(&blk)` for specifying desired side effects
+* handle `Kernel#spawn` & `Kernel.spawn`
+* add `CommandStub#with_stdout(str)` & `CommandStub#with_stderr(str)`. these will work differently for backtick than it will for system & exec.
+* maybe add `CommandStub#with_stdin(str)` for `spawn`?
 
 ## RELEASE 0.3.3
 
