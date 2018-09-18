@@ -19,7 +19,8 @@ module ShellMock
       class_or_module.send(:alias_method, alias_for_original, original)
 
       begin
-        class_or_module.send(:remove_method, original) # for warnings
+        # so we don't have to see method redefinition warnings
+        class_or_module.send(:remove_method, original)
       rescue NameError
       end
 
@@ -28,7 +29,8 @@ module ShellMock
 
     def disable_for(class_or_module)
       begin
-        class_or_module.send(:remove_method, original) # for warnings
+        # so we don't have to see method redefinition warnings
+        class_or_module.send(:remove_method, original)
       rescue NameError
       end
 
