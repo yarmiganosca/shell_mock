@@ -88,7 +88,7 @@ module ShellMock
     end
   end
 
-  BacktickMonkeyPatch = MonkeyPatch.new(:`, :backtick) do |command|
+  BacktickMonkeyPatch = MonkeyPatch.new('`', :backtick) do |command|
     stub = ShellMock::StubRegistry.stub_matching({}, command, {})
 
     if stub
