@@ -4,6 +4,10 @@
 * add `CommandStub#with_stdout(str)` & `CommandStub#with_stderr(str)`. these will work differently for backtick than it will for system & exec.
 * maybe add `CommandStub#with_stdin(str)` for `spawn`?
 
+## RELEASE 0.4.0
+
+* FEATURE: `Kernel#spawn` and `Kernel.spawn` are now supported, which means all of Open3 is, as all of that library eventually results in a `spawn` call.
+
 ## RELEASE 0.3.3
 
 * FIX: `exec`'d calls now registered as having been called
