@@ -11,8 +11,9 @@ module ShellMock
     stub = StubRegistry.stub_matching(env, command, options)
 
     if stub
-      stub.side_effect.call
       stub.called_with(env, command, options)
+
+      stub.side_effect.call
 
       __un_shell_mocked_spawn("exit #{stub.exitstatus}")
     else
@@ -32,8 +33,9 @@ module ShellMock
     stub = StubRegistry.stub_matching(env, command, options)
 
     if stub
-      stub.side_effect.call
       stub.called_with(env, command, options)
+
+      stub.side_effect.call
       __un_shell_mocked_backtick("exit #{stub.exitstatus}")
 
       return stub.exitstatus == 0
@@ -58,8 +60,9 @@ module ShellMock
     stub = StubRegistry.stub_matching(env, command, options)
 
     if stub
-      stub.side_effect.call
       stub.called_with(env, command, options)
+
+      stub.side_effect.call
 
       exit stub.exitstatus
     else
@@ -75,8 +78,9 @@ module ShellMock
     stub = StubRegistry.stub_matching({}, command, {})
 
     if stub
-      stub.side_effect.call
       stub.called_with({}, command, {})
+
+      stub.side_effect.call
       __un_shell_mocked_backtick("exit #{stub.exitstatus}")
 
       return stub.expected_output
