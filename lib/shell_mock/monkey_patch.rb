@@ -7,7 +7,6 @@ module ShellMock
     def initialize(original_name, interpolatable_name = original_name, &block)
       @original           = original_name
       @alias_for_original = "__un_shell_mocked_#{interpolatable_name}"
-      @replacement        = "__shell_mocked_#{interpolatable_name}"
       @block              = block
     end
 
