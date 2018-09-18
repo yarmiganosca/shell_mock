@@ -21,7 +21,7 @@ module ShellMock
       self
     end
 
-    def with_option(option)
+    def with_options(options)
       @options = options
 
       self
