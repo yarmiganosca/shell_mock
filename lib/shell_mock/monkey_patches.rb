@@ -1,4 +1,6 @@
 require 'shell_mock/monkey_patch'
+require 'shell_mock/stub_registry'
+require 'shell_mock/no_stub_specified'
 
 module ShellMock
   SystemMonkeyPatch = MonkeyPatch.new(:system) do |env, command = nil, **options|
@@ -6,7 +8,7 @@ module ShellMock
 
     # other arg manipulation
 
-    stub = ShellMock::StubRegistry.stub_matching(env, command, options)
+    stub = StubRegistry.stub_matching(env, command, options)
 
     if stub
       stub.side_effect.call
@@ -18,7 +20,7 @@ module ShellMock
       if ShellMock.let_commands_run?
         __un_shell_mocked_system(env, command, **options)
       else
-        raise ShellMock::NoStubSpecified.new(env, command, options)
+        raise NoStubSpecified.new(env, command, options)
       end
     end
   end
@@ -32,7 +34,7 @@ module ShellMock
 
     # other arg manipulation
 
-    stub = ShellMock::StubRegistry.stub_matching(env, command, options)
+    stub = StubRegistry.stub_matching(env, command, options)
 
     if stub
       stub.side_effect.call
@@ -43,13 +45,13 @@ module ShellMock
       if ShellMock.let_commands_run?
         __un_shell_mocked_exec(env, command, **options)
       else
-        raise ShellMock::NoStubSpecified.new(env, command, options)
+        raise NoStubSpecified.new(env, command, options)
       end
     end
   end
 
   BacktickMonkeyPatch = MonkeyPatch.new('`', :backtick) do |command|
-    stub = ShellMock::StubRegistry.stub_matching({}, command, {})
+    stub = StubRegistry.stub_matching({}, command, {})
 
     if stub
       stub.side_effect.call
@@ -61,7 +63,7 @@ module ShellMock
       if ShellMock.let_commands_run?
         __un_shell_mocked_backtick(command)
       else
-        raise ShellMock::NoStubSpecified.new({}, command, {})
+        raise NoStubSpecified.new({}, command, {})
       end
     end
   end
