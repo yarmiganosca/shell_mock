@@ -1,7 +1,7 @@
 require "shell_mock/version"
 require 'shell_mock/stub_registry'
 require 'shell_mock/command_stub'
-require 'shell_mock/monkey_patch'
+require 'shell_mock/monkey_patches'
 require 'shell_mock/core_ext/module'
 
 module ShellMock
