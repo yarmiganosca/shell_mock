@@ -14,7 +14,7 @@ describe 'something' do
 end
 ```
 
-Currently, `` ` ``, `exec`, and `system` are supported. Nothing in the `Open3` standard library module is currently supported.
+Currently, `` ` ``, `exec`, `system`, `spawn` are supported. Everything in the Open3 library eventually calls `spawn`, so support is feasible, but doesn't currently exist for Open3 methods.
 
 ### More complex expectations are also supported.
 
