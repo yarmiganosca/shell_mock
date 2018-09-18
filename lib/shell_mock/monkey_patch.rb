@@ -67,7 +67,7 @@ module ShellMock
 
   # This feels very boilerplatey because Kernel::system and Kernel::exec
   # have very similar if not identical method signatures. I'm not sure
-  # whether extracting the commonalities would be worth it or just
+  # whether extracting the commonalities would be worth it or would just
   # confuse.
   ExecMonkeyPatch = MonkeyPatch.new(:exec) do |env, command = nil, **options|
     env, command = {}, env if command.nil?
