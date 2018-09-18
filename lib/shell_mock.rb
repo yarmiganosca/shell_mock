@@ -45,6 +45,11 @@ module ShellMock
   end
 
   def self.monkey_patches
-    [SystemMonkeyPatch, ExecMonkeyPatch, BacktickMonkeyPatch]
+    [
+      SpawnMonkeyPatch,
+      SystemMonkeyPatch,
+      ExecMonkeyPatch,
+      BacktickMonkeyPatch
+    ]
   end
 end

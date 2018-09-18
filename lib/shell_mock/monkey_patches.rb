@@ -3,10 +3,31 @@ require 'shell_mock/stub_registry'
 require 'shell_mock/no_stub_specified'
 
 module ShellMock
+  SpawnMonkeyPatch = MonkeyPatch.new(:spawn) do |env, command = nil, **options|
+    env, command = {}, env if command.nil?
+
+    # other arg manipulation can go here if necessary
+
+    stub = StubRegistry.stub_matching(env, command, options)
+
+    if stub
+      stub.side_effect.call
+      stub.called_with(env, command, options)
+
+      __un_shell_mocked_spawn("exit #{stub.exitstatus}")
+    else
+      if ShellMock.let_commands_run?
+        __un_shell_mocked_spawn(env, command, **options)
+      else
+        raise NoStubSpecified.new(env, command, options)
+      end
+    end
+  end
+
   SystemMonkeyPatch = MonkeyPatch.new(:system) do |env, command = nil, **options|
     env, command = {}, env if command.nil?
 
-    # other arg manipulation
+    # other arg manipulation can go here if necessary
 
     stub = StubRegistry.stub_matching(env, command, options)
 
@@ -32,7 +53,7 @@ module ShellMock
   ExecMonkeyPatch = MonkeyPatch.new(:exec) do |env, command = nil, **options|
     env, command = {}, env if command.nil?
 
-    # other arg manipulation
+    # other arg manipulation can go here if necessary
 
     stub = StubRegistry.stub_matching(env, command, options)
 
@@ -55,8 +76,8 @@ module ShellMock
 
     if stub
       stub.side_effect.call
-      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
       stub.called_with({}, command, {})
+      __un_shell_mocked_backtick("exit #{stub.exitstatus}")
 
       return stub.expected_output
     else

@@ -13,6 +13,13 @@ module ShellMock
 
     let(:exitstatus) { 0 }
 
+    it 'intercepts spawn' do
+      expect(Process.wait spawn('ls')).to be_a Integer
+
+      expect(stub.calls).to_not be_empty
+      expect(home_stub.calls).to be_empty
+    end
+
     it 'intercepts system' do
       expect(system('ls')).to eq true
 
@@ -28,6 +35,13 @@ module ShellMock
     end
 
     context "with a stubbed good exit" do
+      it '"sets" the appropriate exit code for $? with spawn' do
+        expect(Process.wait spawn('ls')).to be_a Integer
+
+        expect($?.exitstatus).to eq exitstatus
+        expect(stub).to have_been_called
+      end
+
       it '"sets" the appropriate exit code for $? with system' do
         expect(system('ls')).to eq true
 
@@ -45,6 +59,13 @@ module ShellMock
 
     context "with a stubbed bad exit" do
       let(:exitstatus) { 4 }
+
+      it '"sets" the appropriate exit code for $? with spawn' do
+        expect(Process.wait spawn('ls')).to be_a Integer
+
+        expect($?.exitstatus).to eq exitstatus
+        expect(stub).to have_been_called
+      end
 
       it '"sets" the appropriate exit code for $? with system' do
         expect(system('ls')).to eq false
