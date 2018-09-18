@@ -6,7 +6,7 @@
 
 ## RELEASE 0.4.0
 
-* FEATURE: `Kernel#spawn` and `Kernel.spawn` are now supported, which means all of Open3 is, as all of that library eventually results in a `spawn` call.
+* FEATURE: `Kernel#spawn` and `Kernel.spawn` are now supported
 
 ## RELEASE 0.3.3
 
