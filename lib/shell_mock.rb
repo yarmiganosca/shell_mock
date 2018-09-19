@@ -29,27 +29,25 @@ module ShellMock
   end
 
   def self.enable
-    ShellMock.monkey_patches.each do |patch|
-      patch.enable_for(Kernel.eigenclass) unless Kernel.respond_to?(patch.alias_for_original, true)
-      patch.enable_for(Kernel)            unless Object.new.respond_to?(patch.alias_for_original, true)
-    end
+    ShellMock.monkey_patches.each(&:enable)
+
+    true
   end
 
   def self.disable
-    ShellMock.monkey_patches.each do |patch|
-      patch.disable_for(Kernel.eigenclass) if Kernel.respond_to?(patch.alias_for_original, true)
-      patch.disable_for(Kernel)            if Object.new.respond_to?(patch.alias_for_original, true)
-    end
+    ShellMock.monkey_patches.each(&:disable)
 
     StubRegistry.clear
+
+    true
   end
 
   def self.monkey_patches
-    [
-      SpawnMonkeyPatch,
-      SystemMonkeyPatch,
-      ExecMonkeyPatch,
-      BacktickMonkeyPatch
+    @monkey_patches ||= [
+      SpawnMonkeyPatch.new,
+      SystemMonkeyPatch.new,
+      ExecMonkeyPatch.new,
+      BacktickMonkeyPatch.new,
     ]
   end
 end

@@ -19,8 +19,12 @@ RSpec.describe ShellMock do
       expect { spawn('ls') }.to raise_error ShellMock::NoStubSpecified
     end
 
-    it 'stops Kernel.spaw' do
+    it 'stops Kernel.spawn' do
       expect { Kernel.spawn('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Process.spawn' do
+      expect { Process.spawn('ls') }.to raise_error ShellMock::NoStubSpecified
     end
 
     it 'stops Kernel#system' do
@@ -58,6 +62,12 @@ RSpec.describe ShellMock do
     it 'lets Kernel.spawn run' do
       expect(Pathname.new('foo')).to_not exist
       expect(Process.wait Kernel.spawn('touch foo')).to be_a Integer
+      expect(Pathname.new('foo')).to exist
+    end
+
+    it 'lets Process.spawn run' do
+      expect(Pathname.new('foo')).to_not exist
+      expect(Process.wait Process.spawn('touch foo')).to be_a Integer
       expect(Pathname.new('foo')).to exist
     end
 
@@ -153,6 +163,10 @@ RSpec.describe ShellMock do
         expect(Kernel.respond_to?(:__un_shell_mocked_spawn, true)).to eq false
       end
 
+      it 'Process.__un_shell_mocked_spawn has been removed' do
+        expect(Process.respond_to?(:__un_shell_mocked_spawn, true)).to eq false
+      end
+
       it 'Kernel#__un_shell_mocked_system has been removed' do
         expect(Object.new.respond_to?(:__un_shell_mocked_system, true)).to eq false
       end
@@ -189,6 +203,10 @@ RSpec.describe ShellMock do
 
     it 'Kernel.__un_shell_mocked_spawn has been defined' do
       expect(Kernel.respond_to?(:__un_shell_mocked_spawn, true)).to eq true
+    end
+
+    it 'Process.__un_shell_mocked_spawn has been defined' do
+      expect(Process.respond_to?(:__un_shell_mocked_spawn, true)).to eq true
     end
 
     it 'Kernel#__un_shell_mocked_system has been defined' do
