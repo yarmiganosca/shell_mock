@@ -32,19 +32,13 @@ Called fewer than `n` times: `expect(stub).to have_been_called.fewer_than(n)`
 
 Right now, only exact command string matches are supported.
 
-### You can also set the output of the command invocation:
+### You can also set the behavior of the command invocation:
 
-```ruby
-require 'shell_mock/rspec'
+To have the mock command invocation write to stdout: `ShellMock.stub_command('ls').and_output("\n")`
 
-describe 'something' do
-  stub = ShellMock.stub_commmand('ls').and_return("\n")
+To set the mock command invocation's exit status: `ShellMock.stub_command('ls').and_exit(2)`
 
-  expect(`ls`).to eq "\n"
-
-  expect(stub).to have_been_called.once
-end
-```
+If you want to both write to stdout and set the exit code (a common pair), `ShellMock.stub_command('ls').and_return("\n")` will both have the command invocation write the passed string to stdout, and will set the mock command invocation's exit status to `0`.
 
 ## Installation
 

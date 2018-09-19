@@ -27,11 +27,16 @@ module ShellMock
       self
     end
 
-    def and_return(expected_output)
+    def and_output(expected_output)
       @expected_output = expected_output
-      @exitstatus      = 0
 
       self
+    end
+
+    def and_return(expected_output)
+      self.
+        and_output(expected_output).
+        and_exit(0)
     end
 
     def and_exit(exitstatus)

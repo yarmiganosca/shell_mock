@@ -8,7 +8,7 @@ module ShellMock
     end
     after { ShellMock.disable }
 
-    let!(:stub)      { ShellMock.stub_command('ls').and_return("\n").and_exit(exitstatus) }
+    let!(:stub)      { ShellMock.stub_command('ls').and_output("\n").and_exit(exitstatus) }
     let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
 
     let(:exitstatus) { 0 }
