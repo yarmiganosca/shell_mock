@@ -14,7 +14,9 @@ module ShellMock
           command_stub.options <= options
       end
 
-      # question: should we increment all the stubs that match?
+      # question: Should we increment all the stubs that match?
+      #   What should users expect when they register a stub that
+      #   wholly "covers" another already-registered stub?
       matching_stubs.max_by do |command_stub|
         [env.size, options.size]
       end
