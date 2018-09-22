@@ -1,7 +1,7 @@
 module ShellMock
   RSpec.describe StubRegistry do
     describe '.stub_matching' do
-      before { StubRegistry.clear }
+      after { StubRegistry.clear }
 
       context "when the stub doesn't specify env vars" do
         let!(:stub) { ShellMock.stub_command('ls') }
