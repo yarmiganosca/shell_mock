@@ -3,7 +3,7 @@ require 'shell_mock/stub_registry'
 
 module ShellMock
   class CommandStub
-    attr_reader :command, :expected_output, :exitstatus, :env, :options, :side_effect, :writer
+    attr_reader :command, :expected_output, :exitstatus, :env, :options, :side_effect
 
     def initialize(command)
       @command     = command
@@ -63,7 +63,7 @@ module ShellMock
 
     private
 
-    attr_reader :reader
+    attr_reader :reader, :writer
 
     def marshaled_signatures
       messages = ""
