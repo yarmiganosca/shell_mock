@@ -9,9 +9,9 @@ module ShellMock
 
     def stub_matching(env, command, options)
       matching_stubs = command_stubs.select do |command_stub|
-        command_stub.env <= env &&
-          command_stub.options <= options &&
-          command_stub.command == command
+        command_stub.command == command &&
+          command_stub.env <= env &&
+          command_stub.options <= options
       end
 
       # question: should we increment all the stubs that match?
