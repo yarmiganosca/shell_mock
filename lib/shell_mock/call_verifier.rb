@@ -31,23 +31,23 @@ module ShellMock
       times(0)
     end
 
-    def matches?(actual)
-      @actual = actual
+    def matches?(command_stub)
+      @command_stub = command_stub
 
-      condition.call(actual.calls)
+      condition.call(command_stub.calls)
     end
 
     def failure_message
-      "#{actual.command} was expected."
+      "#{command_stub.command} was expected."
     end
 
     def failure_message_when_negated
-      "#{actual.command} was not expected."
+      "#{command_stub.command} was not expected."
     end
 
     private
 
-    attr_reader :actual, :condition
+    attr_reader :command_stub, :condition
 
     def match_calls_when(&blk)
       @condition = blk
