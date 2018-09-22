@@ -24,6 +24,7 @@ module ShellMock
     @let_commands_run
   end
 
+  # smell; this is a mistake of a method that will only confuse people
   def self.dont_let_commands_run?
     !let_commands_run?
   end

@@ -14,6 +14,7 @@ module ShellMock
           command_stub.command == command
       end
 
+      # question: should we increment all the stubs that match?
       matching_stubs.max_by do |command_stub|
         [env.size, options.size]
       end
