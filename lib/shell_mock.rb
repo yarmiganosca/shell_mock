@@ -32,6 +32,8 @@ module ShellMock
   def self.enable
     ShellMock.monkey_patches.each(&:enable)
 
+    @enabled = true
+
     true
   end
 
@@ -40,7 +42,13 @@ module ShellMock
 
     StubRegistry.clear
 
+    @enabled = false
+
     true
+  end
+
+  def self.enabled?
+    @enabled
   end
 
   def self.monkey_patches
