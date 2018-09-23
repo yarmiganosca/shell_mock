@@ -21,7 +21,7 @@ module ShellMock
         stub.side_effect.call
         __un_shell_mocked_backtick("exit #{stub.exitstatus}")
 
-        return stub.expected_output
+        return stub.output
       else
         if ShellMock.let_commands_run?
           __un_shell_mocked_backtick(command)

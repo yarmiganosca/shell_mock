@@ -3,7 +3,7 @@ require 'shell_mock/stub_registry'
 
 module ShellMock
   class CommandStub
-    attr_reader :command, :expected_output, :exitstatus, :env, :options, :side_effect
+    attr_reader :command, :output, :exitstatus, :env, :options, :side_effect
 
     def initialize(command)
       @command     = command
@@ -27,15 +27,15 @@ module ShellMock
       self
     end
 
-    def and_output(expected_output)
-      @expected_output = expected_output
+    def and_output(output)
+      @output = output
 
       self
     end
 
-    def and_return(expected_output)
+    def and_return(output)
       self.
-        and_output(expected_output).
+        and_output(output).
         and_exit(0)
     end
 
