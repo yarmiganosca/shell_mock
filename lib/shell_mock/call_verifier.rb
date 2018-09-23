@@ -1,24 +1,24 @@
 module ShellMock
   class CallVerifier
     def initialize
-      match_calls_when { |calls| calls.any? }
+      more_than(0)
     end
 
     def times(n)
-      match_calls_when { |calls| calls.size == n }
+      match_calls_when { |calls| calls == n }
 
       self
     end
 
     def fewer_than(n)
-      match_calls_when { |calls| calls.size < n }
+      match_calls_when { |calls| calls < n }
 
       self
     end
     alias less_than fewer_than
 
     def more_than(n)
-      match_calls_when { |calls| calls.size > n }
+      match_calls_when { |calls| calls > n }
 
       self
     end

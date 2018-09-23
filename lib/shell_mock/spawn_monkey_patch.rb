@@ -20,7 +20,7 @@ module ShellMock
 
         stub.side_effect.call
 
-        __un_shell_mocked_spawn("exit #{stub.exitstatus}")
+        __un_shell_mocked_spawn("echo '#{stub.output}' && exit #{stub.exitstatus}", **options)
       else
         if ShellMock.let_commands_run?
           __un_shell_mocked_spawn(env, command, **options)

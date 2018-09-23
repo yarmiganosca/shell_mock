@@ -16,29 +16,29 @@ module ShellMock
     it 'intercepts spawn' do
       expect(Process.wait spawn('ls')).to be_a Integer
 
-      expect(stub.calls).to_not be_empty
-      expect(home_stub.calls).to be_empty
+      expect(stub.calls).to_not eq 0
+      expect(home_stub.calls).to eq 0
     end
 
     it 'intercepts Process.spawn' do
       expect(Process.wait Process.spawn('ls')).to be_a Integer
 
-      expect(stub.calls).to_not be_empty
-      expect(home_stub.calls).to be_empty
+      expect(stub.calls).to_not eq 0
+      expect(home_stub.calls).to eq 0
     end
 
     it 'intercepts system' do
       expect(system('ls')).to eq true
 
-      expect(stub.calls).to_not be_empty
-      expect(home_stub.calls).to be_empty
+      expect(stub.calls).to_not eq 0
+      expect(home_stub.calls).to eq 0
     end
 
     it 'intercepts backtick' do
       expect(`ls`).to eq "\n"
 
-      expect(stub.calls).to_not be_empty
-      expect(home_stub.calls).to be_empty
+      expect(stub.calls).to_not eq 0
+      expect(home_stub.calls).to eq 0
     end
 
     context "with a stubbed good exit" do
@@ -106,15 +106,15 @@ module ShellMock
     it 'uses the "closest" stub' do
       expect(`ls $HOME`).to eq "\n"
 
-      expect(home_stub.calls).to_not be_empty
-      expect(stub.calls).to be_empty
+      expect(home_stub.calls).to_not eq 0
+      expect(stub.calls).to eq 0
     end
 
     it 'but not too close' do
       expect(`ls /`).to_not eq "\n"
 
-      expect(home_stub.calls).to be_empty
-      expect(stub.calls).to be_empty
+      expect(home_stub.calls).to eq 0
+      expect(stub.calls).to eq 0
     end
   end
 end

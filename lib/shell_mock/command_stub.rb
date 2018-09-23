@@ -46,19 +46,17 @@ module ShellMock
     end
 
     def calls
-      @calls ||= []
+      @calls ||= 0
 
       marshaled_signatures.each do |marshaled_signature|
-        @calls << Marshal.load(marshaled_signature)
+        @calls += 1
       end
 
       @calls
     end
 
     def called_with(env, command, options)
-      signature = Marshal.dump([env, command, options])
-
-      writer.puts(signature)
+      writer.puts("called\n")
     end
 
     private
