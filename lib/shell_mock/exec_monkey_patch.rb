@@ -20,7 +20,7 @@ module ShellMock
 
         stub.side_effect.call
 
-        exit stub.exitstatus
+        __un_shell_mocked_exec(stub.to_oneliner)
       else
         if ShellMock.let_commands_run?
           __un_shell_mocked_exec(env, command, **options)

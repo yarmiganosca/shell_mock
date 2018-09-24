@@ -59,6 +59,10 @@ module ShellMock
       writer.puts("called\n")
     end
 
+    def to_oneliner
+      "echo '#{output}' && exit #{exitstatus}"
+    end
+
     private
 
     attr_reader :reader, :writer

@@ -35,7 +35,7 @@ module ShellMock
     end
 
     it 'intercepts backtick' do
-      expect(`ls`).to eq "\n"
+      expect(`ls`.chomp).to eq "\n"
 
       expect(stub.calls).to_not eq 0
       expect(home_stub.calls).to eq 0
@@ -104,14 +104,14 @@ module ShellMock
     end
 
     it 'uses the "closest" stub' do
-      expect(`ls $HOME`).to eq "\n"
+      expect(`ls $HOME`.chomp).to eq "\n"
 
       expect(home_stub.calls).to_not eq 0
       expect(stub.calls).to eq 0
     end
 
     it 'but not too close' do
-      expect(`ls /`).to_not eq "\n"
+      expect(`ls /`.chomp).to_not eq "\n"
 
       expect(home_stub.calls).to eq 0
       expect(stub.calls).to eq 0

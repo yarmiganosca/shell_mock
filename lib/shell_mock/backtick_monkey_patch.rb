@@ -19,9 +19,8 @@ module ShellMock
         stub.called_with({}, command, {})
 
         stub.side_effect.call
-        __un_shell_mocked_backtick("exit #{stub.exitstatus}")
 
-        return stub.output
+        __un_shell_mocked_backtick(stub.to_oneliner)
       else
         if ShellMock.let_commands_run?
           __un_shell_mocked_backtick(command)
