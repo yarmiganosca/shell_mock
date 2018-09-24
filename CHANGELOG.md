@@ -1,9 +1,11 @@
 ## ROADMAP 1.0.0
 
-* add `CommandStub#with_side_effect(&blk)` for specifying desired side effects
-* add `CommandStub#with_stdout(str)` & `CommandStub#with_stderr(str)`. these will work differently for backtick than it will for system & exec.
+* convert `CommandStub#and_exit` to `CommandStub#will_exit`
+* convert `CommandStub#and_output` to `CommandStub#will_output`
+* convert `CommandStub#and_return` to `CommandStub#will_return`
+* add `CommandStub#will_cause(&blk)` for specifying desired side effects
+* add `CommandStub#will_stdout(str)` & `CommandStub#will_stderr(str)`. these will work differently for backtick than it will for system & exec.
 * maybe add `CommandStub#with_stdin(str)` for `spawn`?
-* `and_return` should be `and_output`, which probably gives me a way into the other in/out/err stuff mentioned above
 
 ## RELEASE 0.4.0
 
