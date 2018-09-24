@@ -1,4 +1,5 @@
 # ShellMock
+[![Gem Version](https://badge.fury.io/rb/shell_mock.png)](http://badge.fury.io/rb/shell_mock)
 [![Build Status](https://secure.travis-ci.org/yarmiganosca/shell_mock.png)](http://travis-ci.org/yarmiganosca/shell_mock)
 
 It's [webmock](http://github.com/bblimke/webmock) for shell commands. It's pretty simple. You can do things like this:
