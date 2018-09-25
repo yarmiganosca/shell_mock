@@ -55,8 +55,8 @@ module ShellMock
       @calls
     end
 
-    def called
-      writer.puts("called\n")
+    def ran
+      writer.puts("ran\n")
     end
 
     def to_oneliner
