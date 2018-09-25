@@ -2,13 +2,18 @@ require 'open3'
 
 module ShellMock
   RSpec.describe SpawnMonkeyPatch do
+    subject(:patch) { SpawnMonkeyPatch.new }
+
     context "when enabled" do
-      before { ShellMock.enable }
-      after  { ShellMock.disable }
+      before { patch.enable }
+      after do
+        patch.disable
+        StubRegistry.clear
+      end
 
       context 'and a command is stubbed' do
-        let!(:stub)      { ShellMock.stub_command('ls').and_return("\n") }
-        let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
+        let!(:stub)      { ShellMock.stub_command('ls') }
+        let!(:home_stub) { ShellMock.stub_command("ls $HOME") }
 
         it 'intercepts spawn' do
           expect(Process.wait spawn('ls')).to be_a Integer
@@ -27,18 +32,18 @@ module ShellMock
         context 'and has a 0 exit specified' do
           let(:exitstatus) { 0 }
           let!(:stub) do
-            ShellMock.stub_command('ls').and_output("\n").and_exit(exitstatus)
+            ShellMock.stub_command('ls').and_exit(exitstatus)
           end
 
           it '"sets" the appropriate exit code for $? with spawn' do
-            expect(Process.wait spawn('ls')).to be_a Integer
+            Process.wait spawn('ls')
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
           end
 
           it '"sets" the appropriate exit code for $? with Process.spawn' do
-            expect(Process.wait Process.spawn('ls')).to be_a Integer
+            Process.wait Process.spawn('ls')
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
@@ -48,18 +53,18 @@ module ShellMock
         context "and has a non-zero exit specified" do
           let(:exitstatus) { 4 }
           let!(:stub) do
-            ShellMock.stub_command('ls').and_output("\n").and_exit(exitstatus)
+            ShellMock.stub_command('ls').and_exit(exitstatus)
           end
 
           it '"sets" the appropriate exit code for $? with spawn' do
-            expect(Process.wait spawn('ls')).to be_a Integer
+            Process.wait spawn('ls')
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
           end
 
           it '"sets" the appropriate exit code for $? with Process.spawn' do
-            expect(Process.wait Process.spawn('ls')).to be_a Integer
+            Process.wait Process.spawn('ls')
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
