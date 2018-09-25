@@ -55,7 +55,7 @@ module ShellMock
       @calls
     end
 
-    def called_with(env, command, options)
+    def called
       writer.puts("called\n")
     end
 

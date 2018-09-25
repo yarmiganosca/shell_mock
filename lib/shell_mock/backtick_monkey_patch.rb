@@ -16,7 +16,7 @@ module ShellMock
       stub = StubRegistry.stub_matching({}, command, {})
 
       if stub
-        stub.called_with({}, command, {})
+        stub.called
 
         stub.side_effect.call
 
