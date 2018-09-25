@@ -1,5 +1,3 @@
-require 'shell_mock'
-
 require 'rspec/core'
 require 'rspec/expectations'
 
