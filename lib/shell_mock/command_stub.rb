@@ -1,4 +1,3 @@
-require 'shell_mock/call_verifier'
 require 'shell_mock/stub_registry'
 
 module ShellMock
