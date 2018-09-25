@@ -11,6 +11,7 @@ module ShellMock
       @options     = {}
       @side_effect = proc {}
       @exitstatus  = 0
+      @output      = nil
 
       @reader, @writer = IO.pipe
     end
@@ -60,7 +61,11 @@ module ShellMock
     end
 
     def to_oneliner
-      "echo '#{output}' && exit #{exitstatus}"
+      if output
+        "echo '#{output}' && exit #{exitstatus}"
+      else
+        "exit #{exitstatus}"
+      end
     end
 
     private
