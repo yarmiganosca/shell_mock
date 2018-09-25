@@ -16,14 +16,14 @@ module ShellMock
         let!(:home_stub) { ShellMock.stub_command("ls $HOME") }
 
         it 'intercepts spawn' do
-          expect(Process.wait spawn('ls')).to be_a Integer
+          expect(Process.wait spawn('ls', out: "/dev/null")).to be_a Integer
 
           expect(stub.calls).to_not eq 0
           expect(home_stub.calls).to eq 0
         end
 
         it 'intercepts Process.spawn' do
-          expect(Process.wait Process.spawn('ls')).to be_a Integer
+          expect(Process.wait Process.spawn('ls', out: "/dev/null")).to be_a Integer
 
           expect(stub.calls).to_not eq 0
           expect(home_stub.calls).to eq 0
@@ -36,14 +36,14 @@ module ShellMock
           end
 
           it '"sets" the appropriate exit code for $? with spawn' do
-            Process.wait spawn('ls')
+            Process.wait spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
           end
 
           it '"sets" the appropriate exit code for $? with Process.spawn' do
-            Process.wait Process.spawn('ls')
+            Process.wait Process.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
@@ -57,14 +57,14 @@ module ShellMock
           end
 
           it '"sets" the appropriate exit code for $? with spawn' do
-            Process.wait spawn('ls')
+            Process.wait spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
           end
 
           it '"sets" the appropriate exit code for $? with Process.spawn' do
-            Process.wait Process.spawn('ls')
+            Process.wait Process.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
