@@ -15,8 +15,15 @@ module ShellMock
         let!(:stub)      { ShellMock.stub_command('ls') }
         let!(:home_stub) { ShellMock.stub_command("ls $HOME") }
 
-        it 'intercepts spawn' do
+        it 'intercepts Kernel#spawn' do
           expect(Process.wait spawn('ls', out: "/dev/null")).to be_a Integer
+
+          expect(stub.calls).to_not eq 0
+          expect(home_stub.calls).to eq 0
+        end
+
+        it 'intercepts Kernel.spawn' do
+          expect(Process.wait Kernel.spawn('ls', out: "/dev/null")).to be_a Integer
 
           expect(stub.calls).to_not eq 0
           expect(home_stub.calls).to eq 0
@@ -35,8 +42,15 @@ module ShellMock
             ShellMock.stub_command('ls').and_exit(exitstatus)
           end
 
-          it '"sets" the appropriate exit code for $? with spawn' do
+          it '"sets" the appropriate exit code for $? with Kernel#spawn' do
             Process.wait spawn('ls', out: "/dev/null")
+
+            expect($?.exitstatus).to eq exitstatus
+            expect(stub).to have_been_called
+          end
+
+          it '"sets" the appropriate exit code for $? with Kernel.spawn' do
+            Process.wait Kernel.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
@@ -56,8 +70,15 @@ module ShellMock
             ShellMock.stub_command('ls').and_exit(exitstatus)
           end
 
-          it '"sets" the appropriate exit code for $? with spawn' do
+          it '"sets" the appropriate exit code for $? with Kernel#spawn' do
             Process.wait spawn('ls', out: "/dev/null")
+
+            expect($?.exitstatus).to eq exitstatus
+            expect(stub).to have_been_called
+          end
+
+          it '"sets" the appropriate exit code for $? with Kernel.spawn' do
+            Process.wait Kernel.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
             expect(stub).to have_been_called
