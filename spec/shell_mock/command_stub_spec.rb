@@ -20,13 +20,6 @@ module ShellMock
       expect(home_stub.calls).to eq 0
     end
 
-    it 'intercepts backtick' do
-      expect(`ls`.chomp).to eq "\n"
-
-      expect(stub.calls).to_not eq 0
-      expect(home_stub.calls).to eq 0
-    end
-
     context "with a stubbed good exit" do
       it '"sets" the appropriate exit code for $? with system' do
         expect(system('ls')).to eq true
