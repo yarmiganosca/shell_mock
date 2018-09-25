@@ -4,6 +4,7 @@
 :sectanchors:
 :linkattrs:
 :toc: macro
+:toc-title:
 :toclevels: 3
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -18,7 +19,7 @@ http://travis-ci.org/yarmiganosca/shell_mock[image:https://secure.travis-ci.org/
 
 toc::[]
 
-== What Is It?
+== What is ShellMock?
 
 It's http://github.com/bblimke/webmock[webmock, target="_blank"] for shell commands. It's pretty simple. You can do things like this:
 
