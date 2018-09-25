@@ -45,6 +45,8 @@ end
 <3> shells out to run `"ls"` (in this case using `Kernel#system`)
 <4> correctly expects that our command stub for `"ls"` will have recorded an invocation
 
+== Using ShellMock
+
 === You can narrow what invocations are matched to your command stub:
 
 Match env vars as well as the command: `ShellMock.stub_command('ls').with_env({'FOO' => 'bar'})`
