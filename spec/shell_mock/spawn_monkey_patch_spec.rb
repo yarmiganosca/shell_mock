@@ -18,22 +18,22 @@ module ShellMock
         it 'intercepts Kernel#spawn' do
           expect(Process.wait spawn('ls', out: "/dev/null")).to be_a Integer
 
-          expect(stub.calls).to_not eq 0
-          expect(home_stub.calls).to eq 0
+          expect(stub.runs).to_not eq 0
+          expect(home_stub.runs).to eq 0
         end
 
         it 'intercepts Kernel.spawn' do
           expect(Process.wait Kernel.spawn('ls', out: "/dev/null")).to be_a Integer
 
-          expect(stub.calls).to_not eq 0
-          expect(home_stub.calls).to eq 0
+          expect(stub.runs).to_not eq 0
+          expect(home_stub.runs).to eq 0
         end
 
         it 'intercepts Process.spawn' do
           expect(Process.wait Process.spawn('ls', out: "/dev/null")).to be_a Integer
 
-          expect(stub.calls).to_not eq 0
-          expect(home_stub.calls).to eq 0
+          expect(stub.runs).to_not eq 0
+          expect(home_stub.runs).to eq 0
         end
 
         context 'and has a 0 exit specified' do

@@ -12,15 +12,15 @@ RSpec.describe ShellMock do
     it 'uses the "closest" stub' do
       `ls $HOME`
 
-      expect(home_stub.calls).to_not eq 0
-      expect(stub.calls).to eq 0
+      expect(home_stub.runs).to_not eq 0
+      expect(stub.runs).to eq 0
     end
 
     it 'but not too close' do
       `ls /`
 
-      expect(home_stub.calls).to eq 0
-      expect(stub.calls).to eq 0
+      expect(home_stub.runs).to eq 0
+      expect(stub.runs).to eq 0
     end
   end
 

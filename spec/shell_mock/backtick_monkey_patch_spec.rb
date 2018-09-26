@@ -16,22 +16,22 @@ module ShellMock
         it 'intercepts Kernel#`' do
           expect(`ls`.chomp).to eq "\n"
 
-          expect(stub.calls).to_not eq 0
-          expect(home_stub.calls).to eq 0
+          expect(stub.runs).to_not eq 0
+          expect(home_stub.runs).to eq 0
         end
 
         it 'intercepts Kernel.`' do
           expect(Kernel.send("`", "ls").chomp).to eq "\n"
 
-          expect(stub.calls).to_not eq 0
-          expect(home_stub.calls).to eq 0
+          expect(stub.runs).to_not eq 0
+          expect(home_stub.runs).to eq 0
         end
 
         it 'intercepts %x literals' do
           expect(%x{ls}.chomp).to eq "\n"
 
-          expect(stub.calls).to_not eq 0
-          expect(home_stub.calls).to eq 0
+          expect(stub.runs).to_not eq 0
+          expect(home_stub.runs).to eq 0
         end
 
         context 'and has a 0 exit specified' do

@@ -45,14 +45,14 @@ module ShellMock
       self
     end
 
-    def calls
-      @calls ||= 0
+    def runs
+      @runs ||= 0
 
-      marshaled_signatures.each do |marshaled_signature|
-        @calls += 1
+      runs_from_pipe.each do |runs|
+        @runs += 1
       end
 
-      @calls
+      @runs
     end
 
     def ran
@@ -71,7 +71,7 @@ module ShellMock
 
     attr_reader :reader, :writer
 
-    def marshaled_signatures
+    def runs_from_pipe
       messages = ""
 
       loop do

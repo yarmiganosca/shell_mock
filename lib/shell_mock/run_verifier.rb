@@ -1,24 +1,24 @@
 module ShellMock
-  class CallVerifier
+  class RunVerifier
     def initialize
       more_than(0)
     end
 
     def times(n)
-      match_calls_when { |calls| calls == n }
+      match_runs_when { |runs| runs == n }
 
       self
     end
 
     def fewer_than(n)
-      match_calls_when { |calls| calls < n }
+      match_runs_when { |runs| runs < n }
 
       self
     end
     alias less_than fewer_than
 
     def more_than(n)
-      match_calls_when { |calls| calls > n }
+      match_runs_when { |runs| runs > n }
 
       self
     end
@@ -34,7 +34,7 @@ module ShellMock
     def matches?(command_stub)
       @command_stub = command_stub
 
-      condition.call(command_stub.calls)
+      condition.call(command_stub.runs)
     end
 
     def failure_message
@@ -49,7 +49,7 @@ module ShellMock
 
     attr_reader :command_stub, :condition
 
-    def match_calls_when(&blk)
+    def match_runs_when(&blk)
       @condition = blk
     end
   end
