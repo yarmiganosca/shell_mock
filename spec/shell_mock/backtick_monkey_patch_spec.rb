@@ -44,21 +44,21 @@ module ShellMock
             `ls`
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with Kernel.`' do
             Kernel.send("`", "ls")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with %x literals' do
             %x{ls}
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
         end
 
@@ -72,21 +72,21 @@ module ShellMock
             `ls`
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with Kernel.`' do
             Kernel.send("`", "ls")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with %x literals' do
             %x{ls}
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
         end
       end

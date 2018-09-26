@@ -46,21 +46,21 @@ module ShellMock
             Process.wait spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with Kernel.spawn' do
             Process.wait Kernel.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with Process.spawn' do
             Process.wait Process.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
         end
 
@@ -74,21 +74,21 @@ module ShellMock
             Process.wait spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with Kernel.spawn' do
             Process.wait Kernel.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
 
           it '"sets" the appropriate exit code for $? with Process.spawn' do
             Process.wait Process.spawn('ls', out: "/dev/null")
 
             expect($?.exitstatus).to eq exitstatus
-            expect(stub).to have_been_called
+            expect(stub).to have_run
           end
         end
       end
