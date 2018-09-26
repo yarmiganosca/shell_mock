@@ -48,15 +48,20 @@ module ShellMock
     def runs
       @runs ||= 0
 
-      runs_from_pipe.each do |runs|
-        @runs += 1
+      loop do
+        begin
+          reader.read_nonblock(1)
+          @runs += 1
+        rescue IO::WaitReadable
+          break
+        end
       end
 
       @runs
     end
 
     def ran
-      writer.puts("ran\n")
+      writer.write("R")
     end
 
     def to_oneliner
@@ -70,19 +75,5 @@ module ShellMock
     private
 
     attr_reader :reader, :writer
-
-    def runs_from_pipe
-      messages = ""
-
-      loop do
-        begin
-          messages += reader.read_nonblock(1)
-        rescue IO::WaitReadable
-          break
-        end
-      end
-
-      messages.split("\n")
-    end
   end
 end
