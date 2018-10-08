@@ -3,6 +3,7 @@
 :source-highlighter: coderay
 :sectanchors:
 :linkattrs:
+:icons: font
 :toc: macro
 :toc-title:
 :toclevels: 3
