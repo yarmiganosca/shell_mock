@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency 'pry-byebug'
   spec.add_development_dependency "structured_changelog", "~> 0.8"
+  spec.add_development_dependency "asciidoctor"
 end
