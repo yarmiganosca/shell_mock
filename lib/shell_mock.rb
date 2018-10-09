@@ -43,7 +43,8 @@ module ShellMock
 
     StubRegistry.clear
 
-    @enabled = false
+    @enabled          = false
+    @let_commands_run = nil
 
     true
   end
