@@ -64,6 +64,10 @@ Have the mock command invocation write to stdout: `ShellMock.stub_command('ls').
 
 Set the mock command invocation's exit status: `ShellMock.stub_command('ls').and_exit(2)`
 
+Set the mock command invocation's exit status to `0`: `ShellMock.stub_command('ls').and_succeed`
+
+Set the mock command invocation's exit status to `1`: `ShellMock.stub_command('ls').and_fail`
+
 If you want to both write to stdout and set the exit code (a common pair), `ShellMock.stub_command('ls').and_return("\n")` will both have the command invocation write the passed string to stdout, and will set the mock command invocation's exit status to `0`.
 
 === Specifying the expected number of command invocations:

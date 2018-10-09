@@ -36,6 +36,18 @@ module ShellMock
       end
     end
 
+    describe '#and_succeed' do
+      it "specifies that the invocation will exit 0" do
+        expect(command_stub.and_succeed.exitstatus).to eq 0
+      end
+    end
+
+    describe '#and_fail' do
+      it "specifies that the status the invocation will exit 1" do
+        expect(command_stub.and_fail.exitstatus).to eq 1
+      end
+    end
+
     describe '#to_oneliner' do
       context 'when output is set' do
         before { command_stub.and_output("42\n") }

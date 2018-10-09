@@ -45,6 +45,14 @@ module ShellMock
       self
     end
 
+    def and_succeed
+      and_exit(0)
+    end
+
+    def and_fail
+      and_exit(1)
+    end
+
     def runs
       @runs ||= 0
 
