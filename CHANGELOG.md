@@ -13,6 +13,12 @@
 * maybe add `CommandStub#with_stdin(str)` for `spawn`?
 * maybe adding the ability to specify the order in which commands output to stdout vs. stderr (like, a sequence of outputs) would be useful? would definitely be fun to build, not sure how useful it would be though.
 
+## RELEASE 0.6.0
+
+* FEATURE: use `#and_succeed` to set an invocation's exit status to 0
+* FEATURE: use `#and_fail` to set an invocation's exit status to 1
+* FIX: `ShellMock.disable` now resets the `let_commands_run` flag, preventing that from carrying between tests
+
 ## RELEASE 0.5.0
 
 * FEATURE: `CommandStub#and_output` can be used on command stubs to set the output of a command without setting the exit status.
