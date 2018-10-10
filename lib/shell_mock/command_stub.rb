@@ -6,13 +6,14 @@ module ShellMock
 
     def initialize(command)
       @command     = command
-      @env         = {}
-      @options     = {}
       @side_effect = proc {}
-      @exitstatus  = 0
-      @output      = nil
 
       @reader, @writer = IO.pipe
+
+      with_env({})
+      with_options({})
+      and_output(nil)
+      and_succeed
     end
 
     def with_env(env)
