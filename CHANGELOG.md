@@ -10,6 +10,19 @@
 * maybe add `CommandStub#with_stdin(str)` for `spawn`?
 * maybe adding the ability to specify the order in which commands output to stdout vs. stderr (like, a sequence of outputs) would be useful? would definitely be fun to build, not sure how useful it would be though.
 
+## RELEASE 0.7.0
+
+* FEATURE: `#to_output` is an alias of `#and_output`
+* FEATURE: `#to_return` is an alias of `#and_return`
+* FEATURE: `#to_exit` is an alias of `#and_exit`
+* FEATURE: `#to_succeed` is an alias of `#and_succeed`
+* FEATURE: `#to_fail` is an alias of `#and_fail`
+* DEPRECATION: `#and_output` is deprecated and will be removed in 1.0.0. Use `#to_output` instead.
+* DEPRECATION: `#and_return` is deprecated and will be removed in 1.0.0. Use `#to_return` instead.
+* DEPRECATION: `#and_exit` is deprecated and will be removed in 1.0.0. Use `#to_exit` instead.
+* DEPRECATION: `#and_succeed` is deprecated and will be removed in 1.0.0. Use `#to_succeed` instead.
+* DEPRECATION: `#and_fail` is deprecated and will be removed in 1.0.0. Use `#to_fail` instead.
+
 ## RELEASE 0.6.0
 
 * FEATURE: use `#and_succeed` to set an invocation's exit status to 0
