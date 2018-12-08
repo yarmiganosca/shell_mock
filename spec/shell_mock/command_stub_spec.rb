@@ -14,43 +14,43 @@ module ShellMock
       end
     end
 
-    describe '#and_output' do
+    describe '#to_output' do
       it "specifies the output the invocation will generate instead of it's 'normal' output" do
-        expect(command_stub.and_output("42\n").output).to eq "42\n"
+        expect(command_stub.to_output("42\n").output).to eq "42\n"
       end
     end
 
-    describe '#and_exit' do
+    describe '#to_exit' do
       it "specifies the status the invocation will exit with instead of it's 'normal' exit status" do
-        expect(command_stub.and_exit(42).exitstatus).to eq 42
+        expect(command_stub.to_exit(42).exitstatus).to eq 42
       end
     end
 
-    describe '#and_return' do
+    describe '#to_return' do
       it "specifies the output the invocation will generate instead of it's 'normal' output" do
-        expect(command_stub.and_return("42\n").output).to eq "42\n"
+        expect(command_stub.to_return("42\n").output).to eq "42\n"
       end
 
       it "specifies that the invocation will exit with status 0" do
-        expect(command_stub.and_return("42\n").exitstatus).to eq 0
+        expect(command_stub.to_return("42\n").exitstatus).to eq 0
       end
     end
 
-    describe '#and_succeed' do
+    describe '#to_succeed' do
       it "specifies that the invocation will exit 0" do
-        expect(command_stub.and_succeed.exitstatus).to eq 0
+        expect(command_stub.to_succeed.exitstatus).to eq 0
       end
     end
 
-    describe '#and_fail' do
+    describe '#to_fail' do
       it "specifies that the status the invocation will exit 1" do
-        expect(command_stub.and_fail.exitstatus).to eq 1
+        expect(command_stub.to_fail.exitstatus).to eq 1
       end
     end
 
     describe '#to_oneliner' do
       context 'when output is set' do
-        before { command_stub.and_output("42\n") }
+        before { command_stub.to_output("42\n") }
 
         it 'echoes that output' do
           expect(command_stub.to_oneliner).to include "echo '42\n'"
@@ -58,7 +58,7 @@ module ShellMock
       end
 
       context 'when the exitstatus is set' do
-        before { command_stub.and_exit(42) }
+        before { command_stub.to_exit(42) }
 
         it 'exits with that status' do
           expect(command_stub.to_oneliner).to include "exit 42"
@@ -66,7 +66,7 @@ module ShellMock
       end
 
       context 'when the output and exitstatus are set' do
-        before { command_stub.and_output("42\n").and_exit(42) }
+        before { command_stub.to_output("42\n").to_exit(42) }
 
         it 'echoes that output' do
           expect(command_stub.to_oneliner).to include "echo '42\n'"

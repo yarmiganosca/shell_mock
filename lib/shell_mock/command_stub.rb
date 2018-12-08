@@ -1,4 +1,5 @@
 require 'shell_mock/stub_registry'
+require 'shell_mock/core_ext/module'
 
 module ShellMock
   class CommandStub
@@ -12,8 +13,8 @@ module ShellMock
 
       with_env({})
       with_options({})
-      and_output(nil)
-      and_succeed
+      to_output(nil)
+      to_succeed
     end
 
     def with_env(env)
@@ -28,31 +29,41 @@ module ShellMock
       self
     end
 
-    def and_output(output)
+    def to_output(output)
       @output = output
 
       self
     end
+    alias and_output to_output
+    deprecate :and_output, :to_output, "1.0.0"
 
-    def and_return(output)
+    def to_return(output)
       self.
-        and_output(output).
-        and_exit(0)
+        to_output(output).
+        to_exit(0)
     end
+    alias and_return to_return
+    deprecate :and_return, :to_return, "1.0.0"
 
-    def and_exit(exitstatus)
+    def to_exit(exitstatus)
       @exitstatus = exitstatus
 
       self
     end
+    alias and_exit to_exit
+    deprecate :and_exit, :to_exit, "1.0.0"
 
-    def and_succeed
-      and_exit(0)
+    def to_succeed
+      to_exit(0)
     end
+    alias and_succeed to_succeed
+    deprecate :and_succeed, :to_succeed, "1.0.0"
 
-    def and_fail
-      and_exit(1)
+    def to_fail
+      to_exit(1)
     end
+    alias and_fail to_fail
+    deprecate :and_fail, :to_fail, "1.0.0"
 
     def runs
       @runs ||= 0

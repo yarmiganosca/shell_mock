@@ -61,15 +61,15 @@ NOTE: ShellMock always matches as strictly as possible, so if you stubbed both `
 
 === Setting the behavior of the command invocation:
 
-Have the mock command invocation write to stdout: `ShellMock.stub_command('ls').and_output("\n")`
+Have the mock command invocation write to stdout: `ShellMock.stub_command('ls').to_output("\n")`
 
-Set the mock command invocation's exit status: `ShellMock.stub_command('ls').and_exit(2)`
+Set the mock command invocation's exit status: `ShellMock.stub_command('ls').to_exit(2)`
 
-Set the mock command invocation's exit status to `0`: `ShellMock.stub_command('ls').and_succeed`
+Set the mock command invocation's exit status to `0`: `ShellMock.stub_command('ls').to_succeed`
 
-Set the mock command invocation's exit status to `1`: `ShellMock.stub_command('ls').and_fail`
+Set the mock command invocation's exit status to `1`: `ShellMock.stub_command('ls').to_fail`
 
-If you want to both write to stdout and set the exit code (a common pair), `ShellMock.stub_command('ls').and_return("\n")` will both have the command invocation write the passed string to stdout, and will set the mock command invocation's exit status to `0`.
+If you want to both write to stdout and set the exit code (a common pair), `ShellMock.stub_command('ls').to_return("\n")` will both have the command invocation write the passed string to stdout, and will set the mock command invocation's exit status to `0`.
 
 === Specifying the expected number of command invocations:
 

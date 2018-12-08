@@ -10,8 +10,8 @@ module ShellMock
       end
 
       context 'and a command is stubbed' do
-        let!(:stub)      { ShellMock.stub_command('ls').and_return("\n") }
-        let!(:home_stub) { ShellMock.stub_command("ls $HOME").and_return("\n") }
+        let!(:stub)      { ShellMock.stub_command('ls').to_return("\n") }
+        let!(:home_stub) { ShellMock.stub_command("ls $HOME").to_return("\n") }
 
         it 'intercepts Kernel#`' do
           expect(`ls`.chomp).to eq "\n"
@@ -37,7 +37,7 @@ module ShellMock
         context 'and has a 0 exit specified' do
           let(:exitstatus) { 0 }
           let!(:stub) do
-            ShellMock.stub_command('ls').and_exit(exitstatus)
+            ShellMock.stub_command('ls').to_exit(exitstatus)
           end
 
           it '"sets" the appropriate exit code for $? with Kernel#`' do
@@ -65,7 +65,7 @@ module ShellMock
         context "and has a non-zero exit specified" do
           let(:exitstatus) { 4 }
           let!(:stub) do
-            ShellMock.stub_command('ls').and_exit(exitstatus)
+            ShellMock.stub_command('ls').to_exit(exitstatus)
           end
 
           it '"sets" the appropriate exit code for $? with Kernel#`' do

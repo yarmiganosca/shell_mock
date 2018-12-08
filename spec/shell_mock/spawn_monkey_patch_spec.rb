@@ -39,7 +39,7 @@ module ShellMock
         context 'and has a 0 exit specified' do
           let(:exitstatus) { 0 }
           let!(:stub) do
-            ShellMock.stub_command('ls').and_exit(exitstatus)
+            ShellMock.stub_command('ls').to_exit(exitstatus)
           end
 
           it '"sets" the appropriate exit code for $? with Kernel#spawn' do
@@ -67,7 +67,7 @@ module ShellMock
         context "and has a non-zero exit specified" do
           let(:exitstatus) { 4 }
           let!(:stub) do
-            ShellMock.stub_command('ls').and_exit(exitstatus)
+            ShellMock.stub_command('ls').to_exit(exitstatus)
           end
 
           it '"sets" the appropriate exit code for $? with Kernel#spawn' do
@@ -99,7 +99,7 @@ module ShellMock
           let(:output)     { 'which not found' }
           let(:exitstatus) { 42 }
 
-          before { ShellMock.stub_command(command).and_output(output).and_exit(exitstatus) }
+          before { ShellMock.stub_command(command).to_output(output).to_exit(exitstatus) }
 
           it "captures the specified output" do
             stdout, stderr, status = Open3.capture3(command)

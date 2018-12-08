@@ -4,9 +4,6 @@
 * `PTYSpawnMonkeyPatch`
 * `OpenMonkeyPatch`
 * should `SpawnMonkeyPatch` be 2 patches (`KernelSpawnMonkeyPatch` and `ProcessSpawnMonkeyPatch`)?
-* convert `CommandStub#and_exit` to `CommandStub#will_exit`
-* convert `CommandStub#and_output` to `CommandStub#will_output`
-* convert `CommandStub#and_return` to `CommandStub#will_return`
 * add `CommandStub#will_cause(&blk)` for specifying desired side effects
 * add `CommandStub#will_stdout(str)` & `CommandStub#will_stderr(str)`. these will work differently for backtick than it will for system & exec.
 * ADD YARD DOCUMENTATION TO METHODS

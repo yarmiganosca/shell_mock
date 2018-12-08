@@ -7,7 +7,7 @@ RSpec.describe ShellMock do
   end
   after { ShellMock.disable }
 
-  let!(:stub) { ShellMock.stub_command('ls').and_return("\n") }
+  let!(:stub) { ShellMock.stub_command('ls').to_return("\n") }
 
   describe '#have_been_called' do
     context 'being called once' do
