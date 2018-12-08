@@ -15,8 +15,9 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-http://badge.fury.io/rb/shell_mock[image:https://badge.fury.io/rb/shell_mock.png[Gem Version]]
-http://travis-ci.org/yarmiganosca/shell_mock[image:https://secure.travis-ci.org/yarmiganosca/shell_mock.png[Build Status]]
+image:https://badge.fury.io/rb/shell_mock.svg["Gem Version", link="https://badge.fury.io/rb/shell_mock"]
+image:https://travis-ci.org/yarmiganosca/shell_mock.svg?branch=master["Build Status", link="https://travis-ci.org/yarmiganosca/shell_mock"]
+image:https://coveralls.io/repos/github/yarmiganosca/shell_mock/badge.svg?branch=master["Test Coverage", link="https://coveralls.io/github/yarmiganosca/shell_mock?branch=master"]
 
 toc::[]
 

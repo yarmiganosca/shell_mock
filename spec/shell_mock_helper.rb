@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-require 'simplecov'
-SimpleCov.start
+require 'coveralls'
+Coveralls.wear!
 
 require 'shell_mock'
 
