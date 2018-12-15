@@ -8,8 +8,9 @@ module ShellMock
       :spawn
     end
 
-    def override(env, command = nil, **options)
-      env, command = {}, env if command.nil?
+    def override(env, command = nil, options = {})
+      command, options = nil, options.merge(command) if command.is_a?(Hash)
+      env, command     = {}, env if command.nil?
 
       # other arg manipulation can go here if necessary
 
@@ -20,10 +21,10 @@ module ShellMock
 
         stub.side_effect.call
 
-        __un_shell_mocked_spawn(stub.to_oneliner, **options)
+        __un_shell_mocked_spawn(stub.to_oneliner, options)
       else
         if ShellMock.let_commands_run?
-          __un_shell_mocked_spawn(env, command, **options)
+          __un_shell_mocked_spawn(env, command, options)
         else
           raise NoStubSpecified.new(env, command, options)
         end

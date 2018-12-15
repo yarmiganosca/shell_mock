@@ -113,6 +113,20 @@ module ShellMock
             expect(status.exitstatus).to eq exitstatus
           end
         end
+
+        describe '.popen2e' do
+          let(:command)    { 'which which' }
+          let(:output)     { 'which not found' }
+          let(:exitstatus) { 42 }
+
+          before { ShellMock.stub_command(command).to_output(output).to_exit(exitstatus) }
+
+          it "writes the specified output to the stdout pipe" do
+            stdin, stdout, waiter = Open3.popen2e(command)
+
+            expect(stdout.read.chomp).to eq output
+          end
+        end
       end
     end
   end
