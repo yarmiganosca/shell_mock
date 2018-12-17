@@ -130,9 +130,7 @@ module ShellMock
           end
 
           context "when the command is not stubbed and command execution is disabled" do
-            before do
-              ShellMock.dont_let_commands_run
-            end
+            before { ShellMock.dont_let_commands_run }
 
             it "raises an error" do
               expect { Open3.popen2e(command) }.to raise_error(
