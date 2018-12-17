@@ -10,6 +10,10 @@
 * maybe add `CommandStub#with_stdin(str)` for `spawn`?
 * maybe adding the ability to specify the order in which commands output to stdout vs. stderr (like, a sequence of outputs) would be useful? would definitely be fun to build, not sure how useful it would be though.
 
+## RELEASE 0.7.2
+
+* FIX: fix bug in SpawnMonkeyPatch involving popen2e when commands were prevented from running.
+
 ## RELEASE 0.7.1
 
 * FIX: fixed an issue with our `spawn` monkey-patch receiving optional key-value parameters from `Open3.popen2e`.
