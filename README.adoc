@@ -128,15 +128,63 @@ Or install it yourself as:
 $ gem install shell_mock
 ....
 
-== Development
+== Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/yarmiganosca/shell_mock
+
+[IMPORTANT]
+.Code of Conduct
+====
+This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the http://contributor-covenant.org[Contributor Convenant] code of conduct.
+====
+
+=== Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to https://rubygems.org[rubygems.org].
+To install this gem onto your local machine, run `bundle exec rake install`.
 
-== Contributing
+=== Testing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/yarmiganosca/shell_mock. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the http://contributor-covenant.org[Contributor Covenant] code of conduct.
+To run all the tests, run
+
+[subs=+macros]
+----
++++<span style="pointer-events:none;user-select:none;">$ </span>+++bundle exec rspec
+----
+
+=== Pull Requests
+
+Pull requests should be well-scoped and include tests appropriate to the changes.
+
+When submitting a pull request that changes user-facing behavior, add release note lines to the commit message body http://github.com/yarmiganosca/structured_changelog#with-multiple-contributors[like this]. You can preview your release lines by running
+
+[subs=+macros]
+----
++++<span style="pointer-events:none;user-select:none;">$ </span>+++bundle exec rake changelog:preview
+----
+
+=== Releases
+
+Releasing a new version is a 2-step process.
+
+First, run
+
+[subs=+macros]
+----
++++<span style="pointer-events:none;user-select:none;">$ </span>+++bundle exec rake changelog:compile
+----
+
+This will add a new release section before the other release sections. It will contain all the release notes in the commit messages since the last release, and will be prepopulated with the minimum possible version given those changes. Proof-read it and reorder the notes if you think doing so would be necessary or clearer. Feel free to increase the version if necessary (to force a major release, for example).
+
+Once you're satisfied, run
+
+[subs=+macros]
+----
++++<span style="pointer-events:none;user-select:none;">$ </span>+++bundle exec rake changelog:release
+----
+
+This will create a git tag for the version, push git commits and tags, and push the `.gem` file to https://rubygems.org[rubygems.org].
 
 == License
 
