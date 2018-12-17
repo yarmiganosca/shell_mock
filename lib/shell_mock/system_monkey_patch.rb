@@ -24,7 +24,7 @@ module ShellMock
         if ShellMock.let_commands_run?
           __un_shell_mocked_system(env, command, options)
         else
-          raise NoStubSpecified.new(env, command, options)
+          raise NoStubSpecified.new(command)
         end
       end
     end

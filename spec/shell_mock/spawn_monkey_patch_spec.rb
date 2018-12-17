@@ -119,12 +119,27 @@ module ShellMock
           let(:output)     { 'which not found' }
           let(:exitstatus) { 42 }
 
-          before { ShellMock.stub_command(command).to_output(output).to_exit(exitstatus) }
+          context "when the command is stubbed" do
+            before { ShellMock.stub_command(command).to_output(output).to_exit(exitstatus) }
 
-          it "writes the specified output to the stdout pipe" do
-            stdin, stdout, waiter = Open3.popen2e(command)
+            it "writes the specified output to the stdout pipe" do
+              stdin, stdout, waiter = Open3.popen2e(command)
 
-            expect(stdout.read.chomp).to eq output
+              expect(stdout.read.chomp).to eq output
+            end
+          end
+
+          context "when the command is not stubbed and command execution is disabled" do
+            before do
+              ShellMock.dont_let_commands_run
+            end
+
+            it "raises an error" do
+              expect { Open3.popen2e(command) }.to raise_error(
+                NoStubSpecified,
+                "no stub specified for which which"
+              )
+            end
           end
         end
       end

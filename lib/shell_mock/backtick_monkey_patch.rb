@@ -25,7 +25,7 @@ module ShellMock
         if ShellMock.let_commands_run?
           __un_shell_mocked_backtick(command)
         else
-          raise NoStubSpecified.new({}, command, {})
+          raise NoStubSpecified.new(command)
         end
       end
     end
