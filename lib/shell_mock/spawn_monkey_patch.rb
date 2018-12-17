@@ -1,6 +1,7 @@
 require 'shell_mock/monkey_patch'
 require 'shell_mock/stub_registry'
 require 'shell_mock/no_stub_specified'
+require 'shell_mock/spawn_arguments'
 
 module ShellMock
   class SpawnMonkeyPatch < MonkeyPatch
@@ -8,11 +9,8 @@ module ShellMock
       :spawn
     end
 
-    def override(env, command = nil, options = {})
-      command, options = nil, options.merge(command) if command.is_a?(Hash)
-      env, command     = {}, env if command.nil?
-
-      # other arg manipulation can go here if necessary
+    def override(*args)
+      env, command, options = SpawnArguments(*args)
 
       stub = StubRegistry.stub_matching(env, command, options)
 
