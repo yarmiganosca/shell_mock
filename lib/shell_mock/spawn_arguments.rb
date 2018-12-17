@@ -46,4 +46,3 @@ def SpawnArguments(*args)
     [env, [command, *args], options]
   end
 end
-
