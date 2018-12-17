@@ -1,3 +1,5 @@
+require 'open3'
+
 RSpec.describe ShellMock do
   describe "::stub_commmand" do
     before do
@@ -75,6 +77,52 @@ RSpec.describe ShellMock do
     it 'stops Kernel.exec' do
       expect { Kernel.exec('ls') }.to raise_error ShellMock::NoStubSpecified
     end
+
+    # These high-level callers of spawn need to be tested as well, even though we don't patch them directly.
+
+    it 'stops Open3.popen2' do
+      expect { Open3.popen2('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.popen2e' do
+      expect { Open3.popen2e('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.popen3' do
+      expect { Open3.popen3('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.capture2' do
+      expect { Open3.capture2('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.capture2e' do
+      expect { Open3.capture2e('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.capture3' do
+      expect { Open3.capture3('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.pipeline' do
+      expect { Open3.pipeline('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.pipeline_r' do
+      expect { Open3.pipeline_r('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.pipeline_w' do
+      expect { Open3.pipeline_w('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.pipeline_rw' do
+      expect { Open3.pipeline_rw('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
+
+    it 'stops Open3.pipeline_start' do
+      expect { Open3.pipeline_start('ls') }.to raise_error ShellMock::NoStubSpecified
+    end
   end
 
   shared_examples_for "commands are allowed to run" do
@@ -138,6 +186,89 @@ RSpec.describe ShellMock do
       Process.wait(child)
 
       expect(Pathname.new('foo')).to exist
+    end
+
+    it "lets Open3.popen2 run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.popen2("touch foo").last.value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.popen2e run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.popen2e("touch foo").last.value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.popen3 run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.popen3("touch foo").last.value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.capture2 run" do
+      expect(Pathname.new("foo")).to_not exist
+      Open3.capture2("touch foo")
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.capture2e run" do
+      expect(Pathname.new("foo")).to_not exist
+      Open3.capture2e("touch foo")
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.capture3 run" do
+      expect(Pathname.new("foo")).to_not exist
+      Open3.capture3("touch foo")
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.pipeline run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      status = Open3.pipeline("touch foo").last
+      Process.wait(status.pid) unless status.exited?
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.pipeline_r run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.pipeline_r("touch foo").last[0].value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.pipeline_w run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.pipeline_w("touch foo").last[0].value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.pipeline_rw run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.pipeline_rw("touch foo").last[0].value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
+    end
+
+    it "lets Open3.pipeline_start run" do
+      expect(Pathname.new("foo")).to_not exist
+
+      Open3.pipeline_start("touch foo")[0].value # wait for termination
+
+      expect(Pathname.new("foo")).to exist
     end
   end
 
