@@ -102,13 +102,13 @@ module ShellMock
           before { ShellMock.stub_command(command).to_output(output).to_exit(exitstatus) }
 
           it "captures the specified output" do
-            stdout, stderr, status = Open3.capture3(command)
+            stdout, _stderr, _status = Open3.capture3(command)
 
             expect(stdout.chomp).to eq output
           end
 
           it 'captures the specified exitstatus' do
-            stdout, stderr, status = Open3.capture3(command)
+            _stdout, _stderr, status = Open3.capture3(command)
 
             expect(status.exitstatus).to eq exitstatus
           end
@@ -122,7 +122,7 @@ module ShellMock
           before { ShellMock.stub_command(command).to_output(output).to_exit(exitstatus) }
 
           it "writes the specified output to the stdout pipe" do
-            stdin, stdout, waiter = Open3.popen2e(command)
+            _stdin, stdout, _waiter = Open3.popen2e(command)
 
             expect(stdout.read.chomp).to eq output
           end
