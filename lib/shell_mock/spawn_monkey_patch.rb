@@ -30,7 +30,7 @@ module ShellMock
     end
 
     def enable
-      enable_for(Process.eigenclass) unless Process.respond_to?(method_alias, true)
+      enable_for(Process.singleton_class) unless Process.respond_to?(method_alias, true)
 
       super
     end
@@ -38,7 +38,7 @@ module ShellMock
     def disable
       super
 
-      disable_for(Process.eigenclass) if Process.respond_to?(method_alias, true)
+      disable_for(Process.singleton_class) if Process.respond_to?(method_alias, true)
     end
   end
 end

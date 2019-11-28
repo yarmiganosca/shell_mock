@@ -2,10 +2,6 @@ module ShellMock
   module CoreExt
     module Module
       module Methods
-        def eigenclass
-          @eigenclass ||= class << self; self; end
-        end
-
         def deprecate(name, replacement, version)
           old_name = :"#{name}_without_deprecation"
 

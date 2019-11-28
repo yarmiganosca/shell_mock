@@ -3,13 +3,13 @@ require 'shell_mock/no_stub_specified'
 module ShellMock
   class MonkeyPatch
     def enable
-      enable_for(Kernel.eigenclass) unless Kernel.respond_to?(method_alias, true)
-      enable_for(Kernel)            unless Object.new.respond_to?(method_alias, true)
+      enable_for(Kernel.singleton_class) unless Kernel.respond_to?(method_alias, true)
+      enable_for(Kernel)                 unless Object.new.respond_to?(method_alias, true)
     end
 
     def disable
-      disable_for(Kernel.eigenclass) if Kernel.respond_to?(method_alias, true)
-      disable_for(Kernel)            if Object.new.respond_to?(method_alias, true)
+      disable_for(Kernel.singleton_class) if Kernel.respond_to?(method_alias, true)
+      disable_for(Kernel)                 if Object.new.respond_to?(method_alias, true)
     end
 
     private
