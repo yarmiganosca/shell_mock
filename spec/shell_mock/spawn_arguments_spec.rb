@@ -154,7 +154,7 @@ RSpec.describe '::SpawnArguments' do
           [{'FOO' => 'BAR'}, [['command', 'argv0'], 'arg1', 'arg2'], {}]
         )
       end
-    end    
+    end
 
     context '(env, [command, argv0], arg1, arg2, options)' do
       it '-> [env, [[command, argv0], arg1, arg2], options]' do
