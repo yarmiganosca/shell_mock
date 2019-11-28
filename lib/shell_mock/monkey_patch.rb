@@ -3,13 +3,13 @@ require 'shell_mock/no_stub_specified'
 module ShellMock
   class MonkeyPatch
     def enable
-      enable_for(Kernel.singleton_class) unless Kernel.respond_to?(method_alias, true)
-      enable_for(Kernel)                 unless Object.new.respond_to?(method_alias, true)
+      enable_for(Kernel.singleton_class) unless enabled_for?(Kernel)
+      enable_for(Kernel)                 unless enabled_for?(Object.new)
     end
 
     def disable
-      disable_for(Kernel.singleton_class) if Kernel.respond_to?(method_alias, true)
-      disable_for(Kernel)                 if Object.new.respond_to?(method_alias, true)
+      disable_for(Kernel.singleton_class) if enabled_for?(Kernel)
+      disable_for(Kernel)                 if enabled_for?(Object.new)
     end
 
     private
@@ -20,6 +20,11 @@ module ShellMock
 
     def interpolatable_name
       method_name
+    end
+
+    # @param patch_status_indicator [#respond_to?]
+    def enabled_for?(patch_status_indicator)
+      patch_status_indicator.respond_to?(method_alias, true)
     end
 
     # @param patch_target [Class, Module]
