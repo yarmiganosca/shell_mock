@@ -1,5 +1,6 @@
 # The method signatures for exec, system, & spawn are identical and complicated.
 # This is a helper method that extracts the env vars hash, command, and options hash components.
+#
 # I've called it SpawnArguments even though it's the same signature for exec, spawn, and system
 # because the Ruby docs for exec and system refer to the docs for spawn, indicating that Ruby
 # considers spawn the "origin" of the signature.
