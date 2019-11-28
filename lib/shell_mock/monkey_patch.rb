@@ -1,5 +1,3 @@
-require 'shell_mock/no_stub_specified'
-
 module ShellMock
   class MonkeyPatch
     def enable
