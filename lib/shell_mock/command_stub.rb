@@ -1,5 +1,6 @@
-require 'shell_mock/stub_registry'
 require 'shell_mock/core_ext/module'
+
+require 'shell_mock/stub_registry'
 
 module ShellMock
   class CommandStub
