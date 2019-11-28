@@ -1,10 +1,10 @@
 require 'shell_mock/core_ext/module'
 
 require "shell_mock/version"
-require 'shell_mock/stub_registry'
 require 'shell_mock/command_stub'
 require 'shell_mock/monkey_patches'
 require 'shell_mock/rspec'
+require 'shell_mock/stub_registry'
 
 module ShellMock
   def self.stub_command(command)

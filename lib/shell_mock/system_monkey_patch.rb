@@ -1,7 +1,7 @@
 require 'shell_mock/monkey_patch'
-require 'shell_mock/stub_registry'
 require 'shell_mock/no_stub_specified'
 require 'shell_mock/spawn_arguments'
+require 'shell_mock/stub_registry'
 
 module ShellMock
   class SystemMonkeyPatch < MonkeyPatch
