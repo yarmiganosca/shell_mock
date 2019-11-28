@@ -22,29 +22,31 @@ module ShellMock
       method_name
     end
 
-    def enable_for(class_or_module)
-      class_or_module.send(:alias_method, method_alias, method_name)
+    # @param patch_target [Class, Module]
+    def enable_for(patch_target)
+      patch_target.send(:alias_method, method_alias, method_name)
 
       begin
         # so we don't have to see method redefinition warnings
-        class_or_module.send(:remove_method, method_name)
+        patch_target.send(:remove_method, method_name)
       rescue NameError
       end
 
-      class_or_module.send(:define_method, method_name, &method(:override))
+      patch_target.send(:define_method, method_name, &method(:override))
     end
 
-    def disable_for(class_or_module)
+    # @param patch_target [Class, Module]
+    def disable_for(patch_target)
       begin
         # so we don't have to see method redefinition warnings
-        class_or_module.send(:remove_method, method_name)
+        patch_target.send(:remove_method, method_name)
       rescue NameError
       end
 
-      class_or_module.send(:alias_method, method_name, method_alias)
+      patch_target.send(:alias_method, method_name, method_alias)
 
       begin
-        class_or_module.send(:remove_method, method_alias)
+        patch_target.send(:remove_method, method_alias)
       rescue NameError
       end
     end
